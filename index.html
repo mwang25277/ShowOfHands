@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>ShowOfHands</title>
+    <script>document.write('<base href="' + document.location + '" />');</script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- My CSS -->
+    <link rel="stylesheet" href="css/index.css" />
+  </head>
+
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Show of Hands</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+            <li><a href="#">Bills</a></li>
+            <li><a href="#">People</a></li>
+            <li><a href="#">Analytics</a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="container-fluid">
+      <div class="col-12 text-center"><h1>Show of Hands</h1></div>
+      <!-- Main Image -->
+      <div id="main" class="col-xs-6 text-center center-block">
+        <img class="round img-responsive filler" src="http://placehold.it/350">
+        <h2>Quality voting analytics using the <a href="https://www.propublica.org/datastore/api/propublica-congress-api">ProPublica Congress API</a></h2>
+      </div>
+      <!-- Bill Scroller -->
+      <div class="col-xs-12 text-center"><h1>Explore recent bills</h1></div>
+      <div id="bills" class="row">
+        <div class="card text-center col-xs-12 col-sm-6 col-md-3">
+          <div class="card-block">
+            <h4 class="card-title">Bill 1</h4>
+            <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
+            <a href="#" class="btn btn-primary">Read more</a>
+          </div>
+        </div>
+        <div class="card text-center col-xs-12 col-sm-6 col-md-3">
+          <div class="card-block">
+            <h4 class="card-title">Bill 2</h4>
+            <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
+            <a href="#" class="btn btn-primary">Read more</a>
+          </div>
+        </div>
+        <div class="card text-center col-xs-12 col-sm-6 col-md-3">
+          <div class="card-block">
+            <h4 class="card-title">Bill 3</h4>
+            <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
+            <a href="#" class="btn btn-primary">Read more</a>
+          </div>
+        </div>
+        <div class="card text-center col-xs-12 col-sm-6 col-md-3">
+          <div class="card-block">
+            <h4 class="card-title">Bill 4</h4>
+            <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
+            <a href="#" class="btn btn-primary">Read more</a>
+          </div>
+        </div>                
+      </div>
+      <!-- Bio Scroller -->
+     <div class="col-xs-12 text-center"><h1>Meet the Senators and Representatives</h1></div>
+      <div id="bios" class="row">
+        <div class="card text-center col-xs-12 col-sm-6 col-md-3">
+          
+          <div class="card-block">
+            <img class="round img-responsive card-img-top" src="http://placehold.it/350" alt="Card image cap">
+            <h4 class="card-title">Senator 1</h4>
+            <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
+            <a href="#" class="btn btn-primary">Learn more</a>
+          </div>
+        </div>
+        <div class="card text-center col-xs-12 col-sm-6 col-md-3">
+          <div class="card-block">
+            <img class="round img-responsive card-img-top" src="http://placehold.it/350" alt="Card image cap">
+            <h4 class="card-title">Representative 1</h4>
+            <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
+            <a href="#" class="btn btn-primary">Learn more</a>
+          </div>
+        </div>
+        <div class="card text-center col-xs-12 col-sm-6 col-md-3">
+          <div class="card-block">
+            <img class="round img-responsive card-img-top" src="http://placehold.it/350" alt="Card image cap">
+            <h4 class="card-title">Senator 2</h4>
+            <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
+            <a href="#" class="btn btn-primary">Learn more</a>
+          </div>
+        </div>
+        <div class="card text-center col-xs-12 col-sm-6 col-md-3">
+          <div class="card-block">
+            <img class="round img-responsive card-img-top" src="http://placehold.it/350" alt="Card image cap">
+            <h4 class="card-title">Representative 1</h4>
+            <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
+            <a href="#" class="btn btn-primary">Learn more</a>
+          </div>
+        </div>                
+      </div>      
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted text-center">Footer info here</p>
+      </div>
+    </footer>
+
+  
+
+    <!-- Angular -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- My js -->
+    <!-- <script src="app.js"></script> -->
+  </body>
+
+</html>
