@@ -16,7 +16,6 @@
 
 #bills, #bios {
 	padding: 0 25px;
-	margin-bottom: 20px;
 }
 
 #bios img {
@@ -27,6 +26,7 @@
 	padding: 1.25rem;
 	border-radius: 20px;
 	background-color: rgba(0,0,100,0.1);
+	margin-bottom: 20px;
 }
 
 .navbar {
