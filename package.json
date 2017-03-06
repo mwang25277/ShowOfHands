@@ -1,0 +1,24 @@
+{
+  "name": "showofhands",
+  "version": "1.0.0",
+  "description": "Websci Dev. group 3 project",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mwang25277/ShowOfHands.git"
+  },
+  "author": "Joseph Noel (noelj)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mwang25277/ShowOfHands/issues"
+  },
+  "homepage": "https://github.com/mwang25277/ShowOfHands#readme",
+  "dependencies": {
+    "express": "^4.15.2",
+    "httpd": "0.0.2"
+  }
+}
