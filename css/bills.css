@@ -1,21 +1,21 @@
 .round {
-	border-radius: 50%;
-	margin: 25px auto;
+    border-radius: 50%;
+    margin: 25px auto;
 }
 
 #main {
-	padding: 1.25rem;
-	border-radius: 20px;
-	background-color: rgba(0,0,100,0.1);
-	float: none;
+    padding: 1.25rem;
+    border-radius: 20px;
+    background-color: rgba(0,0,100,0.1);
+    float: none;
 }
 
-#bills, #bios {
-    padding: 1.25rem;
+.card {
+    margin-bottom: 1.25rem;
 }
 
 h1 {
-	margin: .67em 0;
+    margin: .67em 0;
 }
 
 /* Sticky footer styles
@@ -40,15 +40,15 @@ body {
 }
 
 .container .text-muted {
-	margin: 20px 0;
+    margin: 20px 0;
 }
 
 body {
-	background: repeating-linear-gradient(
-	  45deg,
-	  rgba(255,0,0,0.1),
-	  rgba(255,0,0,0.1) 150px,
-	  #FFF 150px,
-	  #FFF 300px
-	);	
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(255,0,0,0.1),
+      rgba(255,0,0,0.1) 150px,
+      #FFF 150px,
+      #FFF 300px
+    );  
 }

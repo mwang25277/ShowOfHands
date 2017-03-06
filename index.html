@@ -6,69 +6,71 @@
     <title>ShowOfHands</title>
     <script>document.write('<base href="' + document.location + '" />');</script>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <!-- My CSS -->
     <link rel="stylesheet" href="css/index.css" />
   </head>
 
   <body>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Show of Hands</a>
-        </div>
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="#">Show of Hands</a>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Bills</a></li>
-            <li><a href="#">People</a></li>
-            <li><a href="#">Analytics</a></li>
-          </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
+      <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="bills.html">Bills</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="people.html">People</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Analytics</a>
+          </li>
+        </ul>
+      </div>
     </nav>
 
     <div class="container-fluid">
       <div class="col-12 text-center"><h1>Show of Hands</h1></div>
-      <!-- Main Image -->
-      <div id="main" class="col-xs-6 text-center center-block">
-        <img class="round img-responsive filler" src="http://placehold.it/350">
-        <h2>Quality voting analytics using the <a href="https://www.propublica.org/datastore/api/propublica-congress-api">ProPublica Congress API</a></h2>
+      <div class="col-12 col-auto">
+        <div class="card text-center">
+          <img class="round card-img-top img-fluid" src="http://placehold.it/350" alt="Card image cap">
+          <div class="card-block">
+            <h4 class="card-title">Quality voting analytics using the <a href="https://www.propublica.org/datastore/api/propublica-congress-api">ProPublica Congress API</a></h2></h4>
+          </div>
+        </div>
       </div>
       <!-- Bill Scroller -->
-      <div class="col-xs-12 text-center"><h1>Explore recent bills</h1></div>
+      <div class="col-12 text-center"><h1>Explore recent bills</h1></div>
       <div id="bills" class="row">
-        <div class="card text-center col-xs-12 col-sm-6 col-md-3">
+        <div class="card text-center col-12 col-sm-6 col-md-3">
           <div class="card-block">
             <h4 class="card-title">Bill 1</h4>
             <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
             <a href="#" class="btn btn-primary">Read more</a>
           </div>
         </div>
-        <div class="card text-center col-xs-12 col-sm-6 col-md-3">
+        <div class="card text-center col-12 col-sm-6 col-md-3">
           <div class="card-block">
             <h4 class="card-title">Bill 2</h4>
             <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
             <a href="#" class="btn btn-primary">Read more</a>
           </div>
         </div>
-        <div class="card text-center col-xs-12 col-sm-6 col-md-3">
+        <div class="card text-center col-12 col-sm-6 col-md-3">
           <div class="card-block">
             <h4 class="card-title">Bill 3</h4>
             <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
             <a href="#" class="btn btn-primary">Read more</a>
           </div>
         </div>
-        <div class="card text-center col-xs-12 col-sm-6 col-md-3">
+        <div class="card text-center col-12 col-sm-6 col-md-3">
           <div class="card-block">
             <h4 class="card-title">Bill 4</h4>
             <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
@@ -77,36 +79,35 @@
         </div>                
       </div>
       <!-- Bio Scroller -->
-     <div class="col-xs-12 text-center"><h1>Meet the Senators and Representatives</h1></div>
+     <div class="col-12 text-center"><h1>Meet the Senators and Representatives</h1></div>
       <div id="bios" class="row">
-        <div class="card text-center col-xs-12 col-sm-6 col-md-3">
-          
+        <div class="card text-center col-12 col-sm-6 col-md-3">
+          <img class="round img-fluid card-img-top" src="http://placehold.it/350" alt="Card image cap"> 
           <div class="card-block">
-            <img class="round img-responsive card-img-top" src="http://placehold.it/350" alt="Card image cap">
             <h4 class="card-title">Senator 1</h4>
             <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
             <a href="#" class="btn btn-primary">Learn more</a>
           </div>
         </div>
-        <div class="card text-center col-xs-12 col-sm-6 col-md-3">
+        <div class="card text-center col-12 col-sm-6 col-md-3">
+          <img class="round img-fluid card-img-top" src="http://placehold.it/350" alt="Card image cap">
           <div class="card-block">
-            <img class="round img-responsive card-img-top" src="http://placehold.it/350" alt="Card image cap">
             <h4 class="card-title">Representative 1</h4>
             <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
             <a href="#" class="btn btn-primary">Learn more</a>
           </div>
         </div>
-        <div class="card text-center col-xs-12 col-sm-6 col-md-3">
+        <div class="card text-center col-12 col-sm-6 col-md-3">
+          <img class="round img-fluid card-img-top" src="http://placehold.it/350" alt="Card image cap">
           <div class="card-block">
-            <img class="round img-responsive card-img-top" src="http://placehold.it/350" alt="Card image cap">
             <h4 class="card-title">Senator 2</h4>
             <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
             <a href="#" class="btn btn-primary">Learn more</a>
           </div>
         </div>
-        <div class="card text-center col-xs-12 col-sm-6 col-md-3">
+        <div class="card text-center col-12 col-sm-6 col-md-3">
+          <img class="round img-fluid card-img-top" src="http://placehold.it/350" alt="Card image cap">
           <div class="card-block">
-            <img class="round img-responsive card-img-top" src="http://placehold.it/350" alt="Card image cap">
             <h4 class="card-title">Representative 1</h4>
             <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
             <a href="#" class="btn btn-primary">Learn more</a>
@@ -115,7 +116,7 @@
       </div>      
     </div>
 
-    <footer class="footer">
+    <footer class="footer bg-faded">
       <div class="container">
         <p class="text-muted text-center">Footer info here</p>
       </div>
@@ -125,10 +126,10 @@
 
     <!-- Angular -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <!-- Bootstrap JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <!-- My js -->
     <!-- <script src="app.js"></script> -->
   </body>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <title>People</title>
+    <script>document.write('<base href="' + document.location + '" />');</script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <!-- Map CSS -->
+    <link href="css/usmap/jqvmap.min.css" media="screen" rel="stylesheet" type="text/css"/>
+    <!-- Our CSS -->
+    <link rel="stylesheet" href="css/people.css" />
+  </head>
+
+  <body>
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Show of Hands</a>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="bills.html">Bills</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#">People <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Analytics</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+
+      <div class="col-12 text-center"><h1>Choose a Legislative Body</h1></div>
+
+      <div class="row">
+        <div class="col-12 col-lg-6">
+          <div class="card text-center">
+            <img class="round img-fluid card-img-top" src="http://placehold.it/350" alt="Card image cap"> 
+            <div class="card-block">
+              <h4 class="card-title">Senate</h4>
+              <a id="senateLink" href="#" class="btn btn-primary">Link</a>
+            </div>
+          </div>               
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="card text-center">
+            <img class="round img-fluid card-img-top" src="http://placehold.it/350" alt="Card image cap"> 
+            <div class="card-block">
+              <h4 class="card-title">House of Representatives</h4>
+              <a id="houseLink" href="#" class="btn btn-primary">Link</a>
+            </div>
+          </div>               
+        </div>
+      </div>
+    </div>
+
+    <div id="map" class="col-12" style="height:500px;"></div>
+
+    <footer class="footer bg-faded">
+      <div class="container">
+        <p class="text-muted text-center">Footer info here</p>
+      </div>
+    </footer>
+
+  
+
+    <!-- Angular -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <!--- USMap plugin -->
+    <script type="text/javascript" src="js/usmap/jquery.vmap.js"></script>
+    <script type="text/javascript" src="js/usmap/maps/jquery.vmap.usa.js" charset="utf-8"></script>
+    <!-- Our js -->
+    <script src="js/people.js"></script>
+  </body>
+
+</html>
