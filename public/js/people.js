@@ -8,6 +8,9 @@ var choice = "";
 
 // take state and house/senate and loads congressmen
 function loadPeople(state, choice) {
+  // Clear bios in case they already loaded some people
+  $("#bios").empty();
+
   var data = [];
   // phony data
   data.push({
