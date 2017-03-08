@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/bills.css" />
   </head>
 
-  <body>
+  <body data-ng-app="billsApp">
     <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -36,7 +36,7 @@
       </div>
     </nav>
 
-    <div class="container-fluid">
+    <div class="container-fluid" data-ng-controller="billsCtrl">
 
       <div class="col-12 text-center"><h1>Bills</h1></div>
 
@@ -119,6 +119,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <!-- My js -->
     <!-- <script src="app.js"></script> -->
+    <script src="js/bills.js"></script>
   </body>
 
 </html>
