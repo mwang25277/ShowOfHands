@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/mwang25277/ShowOfHands#readme",
   "dependencies": {
+    "body-parser": "^1.17.1",
     "express": "^4.15.2",
-    "httpd": "0.0.2"
+    "httpd": "0.0.2",
+    "propublica-congress-node": "^0.1.2"
   }
 }
