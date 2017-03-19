@@ -16,17 +16,23 @@ function loadPeople(state, choice) {
 
   //send post request and output people on response
   var post = $.post('/people', { chamber: choice, state: state } ,function(data, status){
-    //console.log(data);
+    console.log(data);
     for (var i in data) {
       person = data[i];
-      var str = "<div class='card text-center col-12 col-sm-6 col-md-3'>";
-      str += "<img class='round img-fluid card-img-top' src='http://placehold.it/350'>";
-      str += "<div class='card-block'>";
-      str += "<h4 class='card-title'>" + person.first_name + " " + person.last_name + " (" + person.party + ")</h4>";
-      str += "<p class='card-text'>" + state + "</p>";
-      str += "<a href='" + person.url + "' class='btn btn-primary'>Website</a>";
-      str += "</div></div>";
-      $("#bios").append(str);
+
+      //send post request with person's twitter screen name, to get their image
+      $.post('/img', { twitName: person.twitter_account }, function (imgData, status) {
+        console.log(imgData);
+        person.imgUrl = imgData;
+        var str = "<div class='card text-center col-12 col-sm-6 col-md-3'>";
+        str += "<img class='peopleImg round img-fluid card-img-top' src='" + person.imgUrl + "'>";
+        str += "<div class='card-block'>";
+        str += "<h4 class='card-title'>" + person.first_name + " " + person.last_name + " (" + person.party + ")</h4>";
+        str += "<p class='card-text'>" + state + "</p>";
+        str += "<a href='" + person.url + "' class='btn btn-primary'>Website</a>";
+        str += "</div></div>";
+        $("#bios").append(str);
+      });
     }
 
     $("#bios").show();
@@ -35,12 +41,11 @@ function loadPeople(state, choice) {
 
 // Scrolls to specified div
 $.fn.scrollView = function () {
-  return this.each(function () {
     $('html, body').animate({
-        scrollTop: $(this).offset().top
-    }, 1000);
-  });
-}
+        scrollTop: $(this).offset().top + 'px'
+    }, 'fast');
+    return this;
+};
 
 // Create and then hide map
 $(document).ready(function() {
@@ -56,8 +61,10 @@ $(document).ready(function() {
     territories: false,
     click: function(state) {
       loadPeople(state, choice);
-      $("#map").hide();
-      $("#bios").scrollView();
+      //let data load before scrolling
+      setTimeout( function() {
+        $("#bios").scrollView();
+      },1250);
     }
   });
   $("#map").hide();

@@ -3,6 +3,10 @@
     margin: 25px auto;
 }
 
+.peopleImg {
+  max-width: 75%;
+}
+
 .card {
     margin-bottom: 1.25rem;
 }
