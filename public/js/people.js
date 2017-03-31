@@ -15,7 +15,7 @@ function loadPeople(state, choice) {
   $("#bios").empty();
 
   //send post request and output people on response
-  var post = $.post('/people', { chamber: choice, state: state } ,function(data, status){
+  var post = $.post('/people', { chamber: choice, state: state } , function(data, status){
     console.log(data);
     for (var i in data) {
       person = data[i];
@@ -29,7 +29,7 @@ function loadPeople(state, choice) {
         str += "<div class='card-block'>";
         str += "<h4 class='card-title'>" + person.first_name + " " + person.last_name + " (" + person.party + ")</h4>";
         str += "<p class='card-text'>" + state + "</p>";
-        str += "<a href='" + person.url + "' class='btn btn-primary'>Website</a>";
+        str += "<a href='" + person.url + "' class='btn btn-primary' target='_blank'>Website</a>";
         str += "</div></div>";
         $("#bios").append(str);
       });
@@ -49,7 +49,7 @@ $.fn.scrollView = function () {
 
 // Create and then hide map
 $(document).ready(function() {
-  $('#map').twism("create", 
+  $('#map').twism("create",
   {
     map: "usa",
     border: "black",

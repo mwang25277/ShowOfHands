@@ -2,6 +2,11 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 
+//mongoosejs.com
+var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost/ShowofHands');
+
 //used to parse request data
 //https://scotch.io/tutorials/use-expressjs-to-get-url-and-post-parameters
 var bodyParser = require('body-parser');
@@ -67,7 +72,120 @@ app.post('/img', function(req, res) {
 	  }
 	  else {
 	  	res.send("http://placehold.it/350");
-	  	
 	  }
 	});
 });
+
+app.post('/update-db', function(req, res) {
+
+  var congressNum = 115;
+
+  var Member = mongoose.model('member', { member_id:String, name:String, state:String, chamber:String, party:String, congress:String, website:String, twitter:String });
+	var Bill = mongoose.model('bill', { congress: String, chamber: String,	type: String, id: String,	number: String,	title: String, sponsor: String, introduction_date: String,	committees: String,	latest_major_action_date: String, latest_major_action: String });
+	var Vote = mongoose.model('vote', { member_id: String, bill_number: String, date: String, position: String });
+
+  getMembers(Member, Vote, congressNum, "senate");
+	getBills(Bill, congressNum, "senate","introduced");
+	getBills(Bill, congressNum, "senate","updated");
+	getBills(Bill, congressNum, "senate","passed");
+	getBills(Bill, congressNum, "senate","major");
+
+	getMembers(Member, Vote, congressNum, "house");
+	getBills(Bill, congressNum, "house","introduced");
+	getBills(Bill, congressNum, "house","updated");
+	getBills(Bill, congressNum, "house","passed");
+	getBills(Bill, congressNum, "house","major");
+
+});
+
+function getVotes(Vote, _mem) {
+	congressClient.memberVotePositions({
+		memberId: _mem
+	}).then(function(data) {
+
+		for(var i = 0; i < data.results[0].votes.length; i++) {
+
+			if(data.results[0].votes[i].bill != undefined) {
+				var vote = new Vote({
+					member_id: _mem,
+					bill_number: data.results[0].votes[i].bill.number,
+					date: data.results[0].votes[i].date,
+					time: data.results[0].votes[i].time,
+					position: data.results[0].votes[i].position
+				});
+
+				vote.save(function (err) {
+					if (err) {
+						console.log(err);
+					} else {
+						//console.log("Vote Saved");
+					}
+				});
+			}
+		}
+	});
+}
+
+function getBills(Bill, congressNum, _chamber, _type) {
+	congressClient.billsRecent({
+		congressNumber: congressNum,
+		chamber: _chamber,
+		billType: _type
+	}).then(function(data) {
+
+		for(var i = 0; i < data.results[0].bills.length; i++) {
+			var bill = new Bill({
+				congress: congressNum,
+				chamber: _chamber,
+				type: _type,
+				id: data.results[0].bills[i].id,
+				number: data.results[0].bills[i].number,
+				title: data.results[0].bills[i].title,
+				sponsor: data.results[0].bills[i].sponser_uri,
+				introduction_date: data.results[0].bills[i].introduction_date,
+				committees: data.results[0].bills[i].committees,
+				latest_major_action_date: data.results[0].bills[i].latest_major_action_date,
+				latest_major_action: data.results[0].bills[i].latest_major_action
+			});
+
+			bill.save(function (err) {
+				if (err) {
+					console.log(err);
+				} else {
+					//console.log("Bill " + data.results[0].bills[i].number + " Saved");
+				}
+			});
+		}
+	});
+}
+
+function getMembers(Member, Vote, congressNum, _chamber) {
+    congressClient.memberLists({
+      congressNumber: congressNum,
+      chamber: _chamber
+    }).then(function(data) {
+
+      for(var i = 0; i < data.results[0].members.length; i++) {
+        var memb = new Member({
+          member_id: data.results[0].members[i].id,
+          name: data.results[0].members[i].first_name+" "+data.results[0].members[i].last_name,
+          state: data.results[0].members[i].state,
+          chamber: _chamber,
+          party: data.results[0].members[i].party,
+          congress: congressNum,
+          website: data.results[0].members[i].url,
+          twitter: data.results[0].members[i].twitter_account
+        });
+
+				getVotes(Vote, data.results[0].members[i].id);
+
+        memb.save(function (err) {
+          if (err) {
+            console.log(err);
+          } else {
+            //console.log(_chamber+' Member Saved');
+          }
+        });
+      }
+    });
+  }

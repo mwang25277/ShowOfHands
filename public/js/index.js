@@ -12,3 +12,10 @@
    });
 
 })(window.angular);
+
+
+function update() {
+  $.post('/update-db', function(data, status) {
+    console.log(data);
+  });
+}
