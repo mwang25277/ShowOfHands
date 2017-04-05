@@ -79,13 +79,19 @@ app.post('/img', function(req, res) {
 	});
 });
 
+var Member = mongoose.model('member', { member_id:String, name:String, state:String, chamber:String, party:String, congress:String, website:String, twitter:String });
+var Bill = mongoose.model('bill', { congress: String, chamber: String,  type: String, id: String,   number: String, title: String, sponsor: String, introduction_date: String,  committees: String, latest_major_action_date: String, latest_major_action: String });
+var Vote = mongoose.model('vote', { member_id: String, bill_number: String, date: String, position: String });
+
 app.post('/update-db', function(req, res) {
 
-  var congressNum = 115;
+  console.log("Updating...");
 
-  var Member = mongoose.model('member', { member_id:String, name:String, state:String, chamber:String, party:String, congress:String, website:String, twitter:String });
-	var Bill = mongoose.model('bill', { congress: String, chamber: String,	type: String, id: String,	number: String,	title: String, sponsor: String, introduction_date: String,	committees: String,	latest_major_action_date: String, latest_major_action: String });
-	var Vote = mongoose.model('vote', { member_id: String, bill_number: String, date: String, position: String });
+  Member.collection.remove();
+  Bill.collection.remove();
+  Vote.collection.remove();
+
+  var congressNum = 115;
 
   getMembers(Member, Vote, congressNum, "senate");
 	getBills(Bill, congressNum, "senate","introduced");
@@ -98,7 +104,6 @@ app.post('/update-db', function(req, res) {
 	getBills(Bill, congressNum, "house","updated");
 	getBills(Bill, congressNum, "house","passed");
 	getBills(Bill, congressNum, "house","major");
-
 });
 
 function getVotes(Vote, _mem) {
@@ -121,7 +126,7 @@ function getVotes(Vote, _mem) {
 					if (err) {
 						console.log(err);
 					} else {
-						//console.log("Vote Saved");
+						// console.log("Vote Saved");
 					}
 				});
 			}
