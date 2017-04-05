@@ -21,6 +21,7 @@
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "httpd": "0.0.2",
+    "mongoose": "^4.9.3",
     "propublica-congress-node": "^0.1.2",
     "twitter": "^1.7.0"
   }

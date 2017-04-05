@@ -6,6 +6,7 @@ var http = require('http').Server(app);
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/ShowofHands');
+mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 
 //used to parse request data
 //https://scotch.io/tutorials/use-expressjs-to-get-url-and-post-parameters
@@ -54,7 +55,9 @@ app.post('/people', function(req, res){
 			}
 		}
 		res.send(ppl);
-	});
+	}).catch(function() {
+        console.log("Promise rejection");
+    });
 });
 
 //get the person's twitter profile image using his/her twitter screen name
@@ -123,7 +126,9 @@ function getVotes(Vote, _mem) {
 				});
 			}
 		}
-	});
+	}).catch(function() {
+        console.log("Promise rejection");
+    });
 }
 
 function getBills(Bill, congressNum, _chamber, _type) {
@@ -156,7 +161,9 @@ function getBills(Bill, congressNum, _chamber, _type) {
 				}
 			});
 		}
-	});
+	}).catch(function() {
+        console.log("Promise rejection");
+    });
 }
 
 function getMembers(Member, Vote, congressNum, _chamber) {
@@ -187,5 +194,7 @@ function getMembers(Member, Vote, congressNum, _chamber) {
           }
         });
       }
+    }).catch(function() {
+        console.log("Promise rejection");
     });
   }
