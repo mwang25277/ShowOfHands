@@ -81,7 +81,7 @@ app.post('/img', function(req, res) {
 
 var Member = mongoose.model('member', { member_id:String, name:String, state:String, chamber:String, party:String, congress:String, website:String, twitter:String });
 var Bill = mongoose.model('bill', { congress: String, chamber: String,  type: String, id: String,   number: String, title: String, sponsor: String, introduction_date: String,  committees: String, latest_major_action_date: String, latest_major_action: String });
-var Vote = mongoose.model('vote', { member_id: String, bill_number: String, date: String, position: String });
+var Vote = mongoose.model('vote', { member_id: String, bill_number: String, date: String, time: String, position: String });
 
 app.post('/update-db', function(req, res) {
 
