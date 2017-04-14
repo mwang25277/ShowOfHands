@@ -41,65 +41,58 @@
       <div class="col-12 text-center"><h1>Bills</h1></div>
 
       <!-- Bill Scroller -->
-      <div class="row">
-        <div class="col-12 col-lg-6">
-          <div class="card text-center">
+      <div class="row" ng-init="bills = getBills()" >
+        <div class="col-12 col-lg-6" ng-repeat= "bill in bills">
+          <div class="card text-center" id = "{{bill.id}}">
             <div class="card-header">
               <ul class="nav nav-pills card-header-pills">
                 <li class="nav-item">
-                  <a class="nav-link active" href="#">Info</a>
+                  <a class="nav-link" ng-class="class" href="#{{bill.id}}" ng-click="view=1; changeClass()">Info</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Status</a>
+                  <a class="nav-link" ng-class="class2" href="#{{bill.id}}" ng-click="view=2; changeClass()">Status</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Sponsors</a>
+                  <a class="nav-link" ng-class="class3" href="#{{bill.id}}">Sponsors</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Committees</a>
+                  <a class="nav-link" ng-class="class4" href="#{{bill.id}}" ng-click="view=3; changeClass()">Committees</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Actions</a>
+                  <a class="nav-link" ng-class="class5" href="#{{bill.id}}" ng-click="view=4; changeClass()">Actions</a>
                 </li>
               </ul>
             </div>
-            <div class="card-block">
-              <h4 class="card-title">Bill 1</h4>
-              <h3 class="card-title">Bill Title</h3>
-              <p class="card-text">Primary_subject</p>
-              <a href="#" class="btn btn-primary">gpo_pdf_uri</a>
+            <div class="card-block" ng-show="view==1">
+              <h4 class="card-title">{{bill.id}}</h4>
+              <h3 class="card-title">{{bill.title}}</h3>
+              <p class="card-text">Introduction Date: {{bill.introduction_date}}</p>
+              <a href="{{bill.bill_uri}}" class="btn btn-primary">View Bill Page</a>
             </div>
+
+            <div class="card-block" ng-show="view==2">
+              <h4 class="card-title">{{bill.id}}</h4>
+              <h3 class="card-title">Bill Type: {{bill.type}}</h3>
+              <p class="card-text">Chamber: {{bill.chamber}}</p>
+              <a href="{{bill.bill_uri}}" class="btn btn-primary">View Bill Page</a>
+            </div>
+
+            <div class="card-block" ng-show="view==3">
+              <h4 class="card-title">{{bill.id}}</h4>
+              <h3 class="card-title">Ran by Committee: {{bill.committees}}</h3>
+              <a href="{{bill.bill_uri}}" class="btn btn-primary">View Bill Page</a>
+            </div>
+
+            <div class="card-block" ng-show="view==4">
+              <h4 class="card-title">{{bill.id}}</h4>
+              <h3 class="card-title">Latest Major Action: {{bill.latest_major_action}}</h3>
+              <p class="card-text">Date Action Occured: {{bill.latest_major_action_date}}</p>
+              <a href="{{bill.bill_uri}}" class="btn btn-primary">View Bill Page</a>
+            </div>
+
           </div>               
         </div>
-        <div class="col-12 col-lg-6">
-          <div class="card text-center">
-            <div class="card-header">
-              <ul class="nav nav-pills card-header-pills">
-                <li class="nav-item">
-                  <a class="nav-link active" href="#">Info</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Status</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Sponsors</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Committees</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Actions</a>
-                </li>
-              </ul>
-            </div>
-            <div class="card-block">
-              <h4 class="card-title">Bill 2</h4>
-              <h3 class="card-title">Bill Title</h3>
-              <p class="card-text">Primary_subject</p>
-              <a href="#" class="btn btn-primary">gpo_pdf_uri</a>
-            </div>
-          </div>               
-        </div>
+        
       </div>
     </div>
 
