@@ -5,7 +5,7 @@ var http = require('http').Server(app);
 //mongoosejs.com
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/ShowofHands');
+mongoose.connect('mongodb://localhost:27017/ShowofHands');
 mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 
 //used to parse request data
@@ -33,6 +33,9 @@ app.use(express.static('public'));
 http.listen(3000, function(){
   console.log('Server up on *:3000');
 });
+
+
+
 
 //listen for people post request
 app.post('/people', function(req, res){
@@ -80,8 +83,35 @@ app.post('/img', function(req, res) {
 });
 
 var Member = mongoose.model('member', { member_id:String, name:String, state:String, chamber:String, party:String, congress:String, website:String, twitter:String });
-var Bill = mongoose.model('bill', { congress: String, chamber: String,  type: String, id: String,   number: String, title: String, sponsor: String, introduction_date: String,  committees: String, latest_major_action_date: String, latest_major_action: String });
+var Bill = mongoose.model('bill', { congress: String, chamber: String,  type: String, id: String,   number: String, title: String, sponsor: String, introduction_date: String,  committees: String, latest_major_action_date: String, latest_major_action: String, bill_uri: String });
 var Vote = mongoose.model('vote', { member_id: String, bill_number: String, date: String, time: String, position: String });
+
+
+
+app.get('/bills', function(req, res){
+
+	var query = Bill.find({});
+
+	query.limit(20);
+	query.skip(7);
+	query.exec(function (err, docs){
+		if (err!= null)
+			console.log(err);
+
+		res.send(docs);
+
+	})
+	
+
+
+
+		
+	
+});
+
+
+
+
 
 app.post('/update-db', function(req, res) {
 
@@ -148,14 +178,15 @@ function getBills(Bill, congressNum, _chamber, _type) {
 				congress: congressNum,
 				chamber: _chamber,
 				type: _type,
-				id: data.results[0].bills[i].id,
+				id: data.results[0].bills[i].bill_id,
 				number: data.results[0].bills[i].number,
 				title: data.results[0].bills[i].title,
 				sponsor: data.results[0].bills[i].sponser_uri,
-				introduction_date: data.results[0].bills[i].introduction_date,
+				introduction_date: data.results[0].bills[i].introduced_date,
 				committees: data.results[0].bills[i].committees,
 				latest_major_action_date: data.results[0].bills[i].latest_major_action_date,
-				latest_major_action: data.results[0].bills[i].latest_major_action
+				latest_major_action: data.results[0].bills[i].latest_major_action,
+				bill_uri: data.results[0].bills[i].bill_uri
 			});
 
 			bill.save(function (err) {
