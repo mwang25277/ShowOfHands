@@ -82,7 +82,7 @@ app.post('/img', function(req, res) {
 	});
 });
 
-var Member = mongoose.model('member', { member_id:String, name:String, state:String, chamber:String, party:String, congress:String, website:String, twitter:String });
+var Member = mongoose.model('member', { member_id:String, name:String, state:String, chamber:String, party:String, congress:String, website:String, twitter:String, votes_with_party_pct:String });
 var Bill = mongoose.model('bill', { congress: String, chamber: String,  type: String, id: String,   number: String, title: String, sponsor: String, introduction_date: String,  committees: String, latest_major_action_date: String, latest_major_action: String, bill_uri: String });
 var Vote = mongoose.model('vote', { member_id: String, bill_number: String, date: String, time: String, position: String });
 
@@ -217,7 +217,8 @@ function getMembers(Member, Vote, congressNum, _chamber) {
           party: data.results[0].members[i].party,
           congress: congressNum,
           website: data.results[0].members[i].url,
-          twitter: data.results[0].members[i].twitter_account
+          twitter: data.results[0].members[i].twitter_account,
+          votes_with_party_pct: data.results[0].members[i].votes_with_party_pct
         });
 
 				getVotes(Vote, data.results[0].members[i].id);
