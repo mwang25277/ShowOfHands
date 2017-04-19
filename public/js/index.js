@@ -7,8 +7,8 @@
       $scope.bills =[];
       $scope.view= 1;
       console.log("bills controller starting up");
-      
-      
+
+
         console.log("bills controller getting");
         $http({
           url: '/bills',
@@ -32,7 +32,7 @@
         );
 
 
-      
+
 
 
    });
@@ -51,6 +51,18 @@ $(function() {
 
 function update() {
   $.post('/update-db', function(data, status) {
+    console.log(data);
+  });
+}
+
+function mems() {
+  $.post('/party-distr', function(data, status) {
+    console.log(data);
+  });
+}
+
+function getBillTest() {
+  $.post('/bill-contr', function(data, status) {
     console.log(data);
   });
 }
