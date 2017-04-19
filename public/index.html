@@ -47,36 +47,18 @@
         </div>
       </div>
       <!-- Bill Scroller -->
-      <div class="col-12 text-center" data-ng-controller="billsCtrl"><h1>Explore recent bills</h1></div>
-      <div id="bills" class="row">
-        <div class="card text-center col-12 col-sm-6 col-md-3">
+      <div class="col-12 text-center" ><h1>Explore recent bills</h1></div>
+      <div id="bills" class="row" data-ng-controller="billsCtrl">
+      
+        <div class="card text-center col-12 col-sm-6 col-md-3" ng-repeat = "bill in bills">
           <div class="card-block">
-            <h4 class="card-title">Bill 1</h4>
-            <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
+            <h4 class="card-title">{{bill.id}}</h4>
+            <p class="card-text">{{bill.title}}</p>
             <a href="#" class="btn btn-primary">Read more</a>
           </div>
         </div>
-        <div class="card text-center col-12 col-sm-6 col-md-3">
-          <div class="card-block">
-            <h4 class="card-title">Bill 2</h4>
-            <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
-            <a href="#" class="btn btn-primary">Read more</a>
-          </div>
-        </div>
-        <div class="card text-center col-12 col-sm-6 col-md-3">
-          <div class="card-block">
-            <h4 class="card-title">Bill 3</h4>
-            <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
-            <a href="#" class="btn btn-primary">Read more</a>
-          </div>
-        </div>
-        <div class="card text-center col-12 col-sm-6 col-md-3">
-          <div class="card-block">
-            <h4 class="card-title">Bill 4</h4>
-            <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
-            <a href="#" class="btn btn-primary">Read more</a>
-          </div>
-        </div>
+       
+        
       </div>
       <!-- Bio Scroller -->
      <div class="col-12 text-center" data-ng-controller="peopleCtrl"><h1>Meet the Senators and Representatives</h1></div>
@@ -125,7 +107,7 @@
 
 
     <!-- Angular -->
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
