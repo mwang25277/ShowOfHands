@@ -3,11 +3,11 @@
    var app = angular.module('billsApp', []);
    app.controller('billsCtrl', function($scope, $http, $window) {
       //used to display bills onto page
-      $scope.x = 5;
+      $scope.x = 20;
       $scope.bills = [];
       $scope.view= 1;
 
-
+      
       $scope.class = [];
       $scope.class2 = [];
   	  $scope.changeClass = function(){
@@ -38,7 +38,10 @@
       	
       	$http({
       		url: '/bills',
-      		method: 'GET'
+      		method: 'GET',
+      		params: {
+      			num: $scope.x
+      		}
       	}).then(
       		function successCallback(response){
       			$scope.bills = response.data;

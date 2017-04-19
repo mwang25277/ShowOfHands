@@ -1,9 +1,40 @@
 (function(angular) {
    'use strict';
    var app = angular.module('homeApp', []);
-   app.controller('billsCtrl', function($scope, $http, $window) {
+   app.controller('billsCtrl', function($scope, $rootScope, $http, $window) {
       //get most recent bills to display on home page
-      $scope.x = 5;
+      $scope.x = 4;
+      $scope.bills =[];
+      $scope.view= 1;
+      console.log("bills controller starting up");
+      
+      
+        console.log("bills controller getting");
+        $http({
+          url: '/bills',
+          method: 'GET',
+          params: {
+            num: $scope.x
+          }
+          }).then(
+          function successCallback(response){
+            $scope.bills = response.data;
+            console.log(response.data);
+            console.log("got bills");
+            console.log("rootScope", $rootScope.bills);
+          },
+          function errorCallback(response){
+
+            console.log(response);
+          }
+
+
+        );
+
+
+      
+
+
    });
 
    app.controller('peopleCtrl', function($scope, $http, $window) {
@@ -12,6 +43,10 @@
    });
 
 })(window.angular);
+
+$(function() {
+  //update();
+});
 
 
 function update() {
