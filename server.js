@@ -104,6 +104,32 @@ var Vote = mongoose.model('vote', {
   time: String,
   position: String
 });
+
+
+
+app.get('/bills', function(req, res){
+
+	console.log("finding this many bills: " + req.query.num);
+	var query = Bill.find({});
+
+	query.limit(Number(req.query.num));
+	query.skip(7);
+	query.exec(function (err, docs){
+		if (err!= null)
+			console.log(err);
+		console.log(docs);
+		res.send(docs);
+
+	})
+	
+
+
+
+		
+	
+});
+
+
 app.post('/update-db', function(req, res) {
   console.log("Updating...");
   Member.collection.remove();
