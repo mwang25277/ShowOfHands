@@ -5,6 +5,7 @@
       //used to display bills onto page
       $scope.x = 20;
       $scope.bills = [];
+      $scope.sites = [];
       $scope.view= 1;
 
       
@@ -43,9 +44,9 @@
       			num: $scope.x
       		}
       	}).then(
-      		function successCallback(response){
+      		function successCallback(response, sites){
       			$scope.bills = response.data;
-
+            //$scope.sites = sites.data.sites;
       		},
       		function errorCallback(response){
 
@@ -54,6 +55,27 @@
 
 
       	);
+
+
+      };
+
+
+
+      $scope.loadPage = function(billID){
+        console.log(billID);
+        $http({
+          url: '/getPage',
+          method: 'GET',
+          params: {
+            id: billID
+          }
+        }).then(
+          function successCallback(response){
+          console.log(response.data);
+          window.location.href =(response.data);
+          }
+        );
+
 
 
       };

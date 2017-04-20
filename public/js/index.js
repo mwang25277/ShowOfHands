@@ -32,6 +32,26 @@
         );
 
 
+        $scope.loadPage = function(billID){
+        console.log(billID);
+        $http({
+          url: '/getPage',
+          method: 'GET',
+          params: {
+            id: billID
+          }
+        }).then(
+          function successCallback(response){
+          console.log(response.data);
+          window.location.href =(response.data);
+          }
+        );
+
+
+
+      };
+
+
 
 
 
