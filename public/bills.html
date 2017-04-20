@@ -52,9 +52,9 @@
                 <li class="nav-item">
                   <a class="nav-link" ng-class="class2" href="#{{bill.id}}" ng-click="view=2; changeClass()">Status</a>
                 </li>
-                <li class="nav-item">
+                <!--<li class="nav-item">
                   <a class="nav-link" ng-class="class3" href="#{{bill.id}}">Sponsors</a>
-                </li>
+                </li>-->
                 <li class="nav-item">
                   <a class="nav-link" ng-class="class4" href="#{{bill.id}}" ng-click="view=3; changeClass()">Committees</a>
                 </li>
@@ -67,27 +67,27 @@
               <h4 class="card-title">{{bill.id}}</h4>
               <h3 class="card-title">{{bill.title}}</h3>
               <p class="card-text">Introduction Date: {{bill.introduction_date}}</p>
-              <a href="{{bill.bill_uri}}" class="btn btn-primary">View Bill Page</a>
+              <input type = "button" value = "View Bill Page" class="btn btn-primary" ng-click= "loadPage(bill.id)" />
             </div>
 
             <div class="card-block" ng-show="view==2">
               <h4 class="card-title">{{bill.id}}</h4>
               <h3 class="card-title">Bill Type: {{bill.type}}</h3>
               <p class="card-text">Chamber: {{bill.chamber}}</p>
-              <a href="{{bill.bill_uri}}" class="btn btn-primary">View Bill Page</a>
+              <input type = "button" value = "View Bill Page" class="btn btn-primary" ng-click= "loadPage(bill.id)" />
             </div>
 
             <div class="card-block" ng-show="view==3">
               <h4 class="card-title">{{bill.id}}</h4>
               <h3 class="card-title">Ran by Committee: {{bill.committees}}</h3>
-              <a href="{{bill.bill_uri}}" class="btn btn-primary">View Bill Page</a>
+              <input type = "button" value = "View Bill Page" class="btn btn-primary" ng-click= "loadPage(bill.id)" />
             </div>
 
             <div class="card-block" ng-show="view==4">
               <h4 class="card-title">{{bill.id}}</h4>
               <h3 class="card-title">Latest Major Action: {{bill.latest_major_action}}</h3>
               <p class="card-text">Date Action Occured: {{bill.latest_major_action_date}}</p>
-              <a href="{{bill.bill_uri}}" class="btn btn-primary">View Bill Page</a>
+              <input type = "button" value = "View Bill Page" class="btn btn-primary" ng-click= "loadPage(bill.id)" />
             </div>
 
           </div>               
