@@ -107,6 +107,23 @@ var Vote = mongoose.model('vote', {
 
 
 
+app.get('/getPage', function(req, res) {
+
+	var bill_args = req.query.id.split("-");
+        //console.log(docs[j]);
+        congressClient.billDetails({
+          congressNumber: bill_args[1],
+          billId: bill_args[0]
+        }).then(function(data) {
+          console.log(data.results[0].congressdotgov_url);
+          var site = data.results[0].congressdotgov_url;
+          
+          res.send(site);
+          console.log("sent site");
+        });
+
+});
+
 app.get('/bills', function(req, res){
 
 	console.log("finding this many bills: " + req.query.num);
@@ -117,10 +134,21 @@ app.get('/bills', function(req, res){
 	query.exec(function (err, docs){
 		if (err!= null)
 			console.log(err);
-		console.log(docs);
-		res.send(docs);
+		//console.log(docs);
 
-	})
+		var sites = [];
+		var i;
+	for (i = 0; i < docs.length; ++i) {
+		var j = i;
+        
+      }
+
+
+
+      	if (i == docs.length)
+			res.send(docs);
+
+	});
 	
 
 
