@@ -86,3 +86,9 @@ function getBillTest() {
     console.log(data);
   });
 }
+
+function getImages() {
+  $.post('/get-images', function(data, status) {
+    console.log(data);
+  });
+}

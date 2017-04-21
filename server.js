@@ -176,6 +176,11 @@ app.post('/update-db', function(req, res) {
 //  getBills(Bill, congressNum, "house", "major");
 });
 
+app.post('/get-images', function(req, res) {
+	//res.send(Member.find());
+	getImages();
+});
+
 function getVotes(Vote, _mem) {
   congressClient.memberVotePositions({
     memberId: _mem
@@ -292,6 +297,46 @@ function getMembers(Member, Vote, congressNum, _chamber) {
     console.log("Promise rejection");
   });
 }
+
+function getImages() {
+	var stream = Member.find().stream();
+	var counter = 0;
+	stream.on('data', function (doc) {
+    //console.log(doc);
+    var imgUrl_ = "";
+    twitClient.get('users/lookup', { screen_name: doc.twitter}).then(function(error, tweets, response) {
+    	if (!error) {
+		    //console.log(tweets[0].profile_image_url);
+		    //change the url to get the original (not resized) image
+		    imgUrl_ = tweets[0].profile_image_url;
+		    imgUrl_ = imgUrl_.replace("_normal", "");
+		  }
+		  else {
+		  	imgUrl_ = "http://placehold.it/350";
+		  }
+		Member.update({id_: doc.id_}, {$set: {imgUrl: imgUrl_}}, {upsert: true}, function(err) {
+	    	if(err) {
+	    		console.log(err);
+	    	}
+	    	else {
+	    		counter++;
+			    console.log(counter);
+			    if(counter >= 542) {
+					console.log("Completed getting images.");
+					stream.close();
+				}
+	    	}
+	    });
+	    console.log(doc.name);
+	    //res.send(imgUrl);
+	    
+	}).catch(function(err) {
+    	console.log("Promise rejection");
+    	console.log(err);
+	});
+});
+
+
 app.post('/party-distr', function(req, res) {
   var rep = 0,
     dem = 0,
