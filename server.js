@@ -122,16 +122,18 @@ var Vote = mongoose.model('vote', {
 
 app.get('/getPage', function(req, res) {
 	var bill_args = req.query.id.split("-");
-	//console.log(docs[j]);
-	congressClient.billDetails({
-		congressNumber: bill_args[1],
-		billId: bill_args[0]
-	}).then(function(data) {
-		console.log(data.results[0].congressdotgov_url);
-		var site = data.results[0].congressdotgov_url;
-		res.send(site);
-		console.log("sent site");
-	});
+        //console.log(docs[j]);
+        congressClient.billDetails({
+          congressNumber: bill_args[1],
+          billId: bill_args[0]
+        }).then(function(data) {
+          console.log(data.results[0].congressdotgov_url);
+          var site = data.results[0].congressdotgov_url;
+
+          res.send(site);
+          console.log("sent site");
+        });
+
 });
 
 app.get('/bills', function(req, res) {
@@ -144,11 +146,16 @@ app.get('/bills', function(req, res) {
 		//console.log(docs);
 		var sites = [];
 		var i;
-		for (i = 0; i < docs.length; ++i) {
-			var j = i;
-		}
-		if (i == docs.length) res.send(docs);
+	for (i = 0; i < docs.length; ++i) {
+		var j = i;
+
+      }
+
+      	if (i == docs.length)
+			res.send(docs);
+
 	});
+
 });
 
 app.post('/update-db', function(req, res) {
@@ -326,9 +333,10 @@ function getImages() {
 								console.log("Completed getting images.");
 								stream.close();
 							}
-						}
-					});
-				}
+				    	}
+				    });
+			    }
+
 			}).catch(function(err) {
 				console.log("Promise rejection");
 				console.log(err);
@@ -451,13 +459,5 @@ app.post('/missed-vote-pct', function(req, res) {
 				res.send(response);
 			}
 		}
-	});
-});
-
-app.get('/get-members', function(req, res) {
-	Member.find({
-		'state': req.query.state
-	}, function(err, members) {
-		res.send(members);
 	});
 });
