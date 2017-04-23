@@ -62,38 +62,24 @@
         
       </div>
       <!-- Bio Scroller -->
-     <div class="col-12 text-center" data-ng-controller="peopleCtrl"><h1>Meet the Senators and Representatives</h1></div>
-      <div id="bios" class="row">
-        <div class="card text-center col-12 col-sm-6 col-md-3">
+     <div class="col-12 text-center"><h1>Meet the Senators and Representatives</h1></div>
+      <div id="bios" class="row" data-ng-controller="peopleCtrl">
+        <div class="card text-center col-12 col-sm-6 col-md-3" ng-repeat = "senator in senators">
           <img class="round img-fluid card-img-top" src="http://placehold.it/350" alt="Card image cap">
           <div class="card-block">
-            <h4 class="card-title">Senator 1</h4>
-            <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
+            <h4 class="card-title">Senator {{senator.name}}</h4>
+            <p class="card-text"><a href={{senator.website}}>Website</a></p>
+
             <a href="#" class="btn btn-primary">Learn more</a>
           </div>
         </div>
-        <div class="card text-center col-12 col-sm-6 col-md-3">
+        <div class="card text-center col-12 col-sm-6 col-md-3" ng-repeat = "rep in reps | limitTo: num">
           <img class="round img-fluid card-img-top" src="http://placehold.it/350" alt="Card image cap">
           <div class="card-block">
-            <h4 class="card-title">Representative 1</h4>
-            <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
+            <h4 class="card-title">Representative {{rep.name}}</h4>
+            <p class="card-text"><a href={{rep.website}}>Website</a></p>
             <a href="#" class="btn btn-primary">Learn more</a>
           </div>
-        </div>
-        <div class="card text-center col-12 col-sm-6 col-md-3">
-          <img class="round img-fluid card-img-top" src="http://placehold.it/350" alt="Card image cap">
-          <div class="card-block">
-            <h4 class="card-title">Senator 2</h4>
-            <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
-            <a href="#" class="btn btn-primary">Learn more</a>
-          </div>
-        </div>
-        <div class="card text-center col-12 col-sm-6 col-md-3">
-          <img class="round img-fluid card-img-top" src="http://placehold.it/350" alt="Card image cap">
-          <div class="card-block">
-            <h4 class="card-title">Representative 1</h4>
-            <p class="card-text">Some summary text... lorem ipsem blah blah blah make it long.</p>
-            <a href="#" class="btn btn-primary">Learn more</a>
           </div>
         </div>
       </div>
@@ -113,6 +99,7 @@
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlbmy0bgqRsP80XaX6h-uiaZO6Z6AeBU0"></script> 
     <!-- My js -->
     <script src="js/index.js" type="text/javascript"></script>
     
