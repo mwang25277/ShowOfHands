@@ -102,7 +102,7 @@ app.get('/getPage', function(req, res) {
         }).then(function(data) {
           console.log(data.results[0].congressdotgov_url);
           var site = data.results[0].congressdotgov_url;
-          
+
           res.send(site);
           console.log("sent site");
         });
@@ -125,21 +125,14 @@ app.get('/bills', function(req, res){
 		var i;
 	for (i = 0; i < docs.length; ++i) {
 		var j = i;
-        
+
       }
-
-
 
       	if (i == docs.length)
 			res.send(docs);
 
 	});
-	
 
-
-
-		
-	
 });
 
 
@@ -174,7 +167,7 @@ function getVotes(Vote, _mem) {
       if (data.results[0].votes[i].bill != undefined) {
         var vote = new Vote({
           member_id: _mem,
-          bill_uri: data.results[0].votes.bill.bill_uri,
+          bill_uri: data.results[0].votes[i].bill.bill_uri,
           bill_number: data.results[0].votes[i].bill.number,
           date: data.results[0].votes[i].date,
           time: data.results[0].votes[i].time,
@@ -193,28 +186,6 @@ function getVotes(Vote, _mem) {
     console.log("Promise rejection");
     console.log(err);
   });
-}
-
-function getBillContr(bill_id, congressNum) {
-
-  var bId = bill_id.split("-")
-
-	var res_arr = new Array();
-	congressClient.billDetails({
-		billId: bId[0],
-		congressNumber: congressNum
-	}).then(function(data) {
-    var y, n, a;
-    y = data.results[0].votes[0].total_yes;
-		res_arr.push(y); //yes
-    n = data.results[0].votes[0].total_no;
-		res_arr.push(n); //no
-    a = data.results[0].votes[0].total_not_voting;
-		res_arr.push(a); //abstain
-    res_arr.push(Number(y)+Number(n)+Number(a)) //total
-    // console.log(res_arr);
-    return res_arr;
-	});
 }
 
 function getBills(Bill, congressNum, _chamber, _type) {
@@ -318,12 +289,12 @@ function getImages() {
 			    	console.log("twit err:");
 			    	console.log(error);
 			    }
-			    
+
 			}).catch(function(err) {
 		    	console.log("Promise rejection");
 		    	console.log(err);
 			});
-		
+
 	});
 	stream.on('error', function(err) {
 		console.log("Stream error:");
@@ -366,40 +337,40 @@ app.post('/party-distr', function(req, res) {
 });
 
 app.post('/bill-contr', function(req, res) {
-	Bill.find({ 'type': 'passed' }, function (err, bills) {
-      for (var i = 0; i < bills.length; ++i) {
-        var bill_args = bills[i].id.split("-");
-        congressClient.billDetails({
-          congressNumber: bill_args[1],
-          billId: bill_args[0]
-        }).then(function(data) {
-          var y, n, a, y_perc, n_perc, a_perc;
-          if (data.results[0].votes.length != 0) {
-            var res_arr = new Array();
-            console.log(data.results[0].votes[0]);
-            y = data.results[0].votes[0].total_yes;
-            n = data.results[0].votes[0].total_no;
-            a = data.results[0].votes[0].total_not_voting;
+  var bill_id = req.query.bill_id;
+	Bill.find({ 'type': 'passed', 'id':bill_id }, function (err, bills) {
+    var bill_args = bill_id.split("-");
+    congressClient.billDetails({
+      congressNumber: bill_args[1],
+      billId: bill_args[0]
+    }).then(function(data) {
+      var y, n, a, y_perc, n_perc, a_perc;
+      console.log(data.results[0]);
+      if (data.results[0].votes.length != 0) {
+        var res_arr = new Array();
+        y = data.results[0].votes[0].total_yes;
+        n = data.results[0].votes[0].total_no;
+        a = data.results[0].votes[0].total_not_voting;
 
-            total = Number(y)+Number(n)+Number(a)
+        total = Number(y)+Number(n)+Number(a)
 
-            y_perc = parseFloat(Math.round((y / total) * 100));
-            n_perc = parseFloat(Math.round((n / total) * 100));
-            a_perc = parseFloat(Math.round((a / total) * 100));
+        y_perc = ((y / total) * 100);
+        n_perc = ((n / total) * 100);
+        a_perc = ((a / total) * 100);
 
-            console.log(y_perc);
-            console.log(n_perc);
-            console.log(a_perc);
-          } else {
-            y_perc = 100;
+        console.log(y_perc);
+        console.log(n_perc);
+        console.log(a_perc);
+      } else {
+        y_perc = 100;
 
-            console.log(y_perc);
-            console.log(n_perc);
-          }
-
-          // res.send(res_arr);
-        });
+        console.log(y_perc);
+        console.log(n_perc);
       }
+
+      res.send({'yes_votes':y_perc, 'no_votes':n_perc, 'abst_votes':a_perc});
+
+    });
   });
 });
 
@@ -426,7 +397,7 @@ app.post('/senate-vote-pct', function(req,res) {
 
 				partyTotal += parseFloat(member.votes_with_party_pct);
 				missedTotal += parseFloat(member.missed_votes_pct);
-				
+
 			}
 			if(i >= members.length) {
 				//compute average and add to votingPct
@@ -457,10 +428,10 @@ app.post('/senate-vote-pct', function(req,res) {
 				if(j >= votingPct.length) {
 					response[0] = party;
 					response[1] = missed;
-					res.send(response);					
+					res.send(response);
 				}
 			}
-		}	
+		}
 	});
 });
 
@@ -485,14 +456,14 @@ app.post('/house-vote-pct', function(req,res) {
 				temp["name"] = member.name + "(" + member.state + ")";
 				temp["missed"] = parseFloat(member.missed_votes_pct);
 				temp["party"] = parseFloat(member.votes_with_party_pct);
-				
+
 				if(member.party == "R") {
 					reps.push(temp);
 				}
 				else {
 					dems.push(temp);
 				}
-				
+
 			}
 			if(i >= members.length) {
 				if(req.body.vote == "missed") {
@@ -538,7 +509,7 @@ app.post('/house-vote-pct', function(req,res) {
 							}
 						}
 
-						var data = [ 
+						var data = [
 							{
 								label: "Democrats",
 								values: {
@@ -575,7 +546,7 @@ app.post('/house-vote-pct', function(req,res) {
 					reps.sort(function(a,b) {
 						return a.party - b.party;
 					});
-					setTimeout(function() { 
+					setTimeout(function() {
 						var repsQ1 = reps[Math.ceil(reps.length / 4)].party;
 						var repsQ2 = reps[Math.ceil(reps.length / 2)].party;
 						var repsQ3 = reps[Math.ceil(reps.length * 3 / 4)].party;
@@ -613,7 +584,7 @@ app.post('/house-vote-pct', function(req,res) {
 							}
 						}
 
-						var data = [ 
+						var data = [
 							{
 								label: "Democrats",
 								values: {
@@ -645,7 +616,7 @@ app.post('/house-vote-pct', function(req,res) {
 					}, 2000);
 				}
 			}
-		}	
+		}
 	});
 });
 
