@@ -15,6 +15,11 @@
     padding: 1.25rem;
 }
 
+.card-img-top {
+  height: 400px;
+  width: 400px;
+}
+
 h1 {
     margin: .67em 0;
 }

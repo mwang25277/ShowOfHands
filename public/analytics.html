@@ -43,8 +43,8 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Voting %</a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" data-toggle="tab" href="#members" ng-click="getSenGraphs()">Senate</a>
-            <a class="dropdown-item" href="#menu3" ng-click="getHouseGraphs()">House of Reps</a>
+            <a class="dropdown-item" data-toggle="tab" href="#senate" ng-click="getSenGraphs()">Senate</a>
+            <a class="dropdown-item" data-toggle="tab" href="#house" ng-click="getHouseGraphs()">House of Reps</a>
           </div>
         </li>
         <li class="nav-item">
@@ -54,22 +54,15 @@
       </ul>
 
       <div class="tab-content">
-        <div id="members" class="tab-pane fade active">
+        <div id="senate" class="tab-pane fade active">
           <h3>Voting Percentages: Senate</h3>
-          <nvd3 options="options" data="demSen"></nvd3>
-          <nvd3 options="options" data="repSen"></nvd3>
+          <nvd3 options="demSenOptions" data="demSen"></nvd3>
+          <nvd3 options="repSenOptions" data="repSen"></nvd3>
         </div>
-        <div id="bills" class="tab-pane fade">
-          <h3>Menu 1</h3>
-          <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        </div>
-        <div id="menu2" class="tab-pane fade">
-          <h3>Menu 2</h3>
-          <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-        </div>
-        <div id="menu3" class="tab-pane fade">
-          <h3>Menu 3</h3>
-          <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+        <div id="house" class="tab-pane fade active">
+          <h3>Voting Percentages: House</h3>
+          <nvd3 options="partyOptions" data="party"></nvd3>
+          <nvd3 options="missedOptions" data="missed"></nvd3>
         </div>
       </div>
     </div>

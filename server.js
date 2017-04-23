@@ -31,27 +31,6 @@ http.listen(3000, function() {
 });
 //listen for people post request
 app.post('/people', function(req, res) {
-  //console.log("Chamber: " + req.body.chamber);
-  // console.log("State: " + req.body.state);
-  //get list of all members in specified chamber
-  // congressClient.memberLists({
-  //   congressNumber: 115,
-  //   chamber: req.body.chamber
-  // }).then(function(data) {
-  //   //console.log(data);
-  //   //iterate through members and add the members of the specified state to ppl
-  //   var ppl = [];
-  //   var i;
-  //   for (i = 0; i < data.results[0].members.length; i++) {
-  //     if (data.results[0].members[i].state == req.body.state) {
-  //       ppl.push(data.results[0].members[i]);
-  //     }
-  //   }
-  //   res.send(ppl);
-  // }).catch(function(err) {
-  //   console.log("Promise rejection");
-  //   console.log(err);
-  // });
 
   Member.find({chamber: req.body.chamber, state: req.body.state }, function(err, members) {
   	res.send(members);
@@ -313,8 +292,7 @@ function getImages() {
 	stream.on('data', function (doc) {
 	    //console.log(doc);
 	    var imgUrl_ = "";
-	    if( doc.twitter != null && doc.twitter != "" && doc.twitter != undefined) {
-		    twitClient.get('users/show', { screen_name: doc.twitter}).then(function(error, tweets, response) {
+		    twitClient.get('users/lookup', { screen_name: doc.twitter}).then(function(error, tweets, response) {
 		    	if (!error) {
 		    		console.log(doc.name);
 				    //console.log(tweets[0].profile_image_url);
@@ -336,16 +314,24 @@ function getImages() {
 				    	}
 				    });
 			    }
+			    else {
+			    	console.log("twit err:");
+			    	console.log(error);
+			    }
 			    
 			}).catch(function(err) {
 		    	console.log("Promise rejection");
 		    	console.log(err);
 			});
-		}
+		
+	});
+	stream.on('error', function(err) {
+		console.log("Stream error:");
+		console.log(err);
 	});
 	stream.on('close', function(err) {
-		stream.destroy();
-	});
+		console.log("Stream closed");
+	})
 
 }
 
@@ -417,45 +403,247 @@ app.post('/bill-contr', function(req, res) {
   });
 });
 
-app.post('/party-vote-pct', function(req,res) {
+//post request to collect voting percentages data
+app.post('/senate-vote-pct', function(req,res) {
 	var response = {};
-	var missed = [];
-	var party = [];
+	var missed = []; //list of objects to follow nvd3 schema. obj {label: , value: }
+	var party = []; //list of objects to follow nvd3 schema. obj {label: , value: }
+	var votingPct = []; // list of objects, obj {name: , missed: , party: }
+	var partyTotal = 0; //used to compute average votes_with_party_pct
+	var missedTotal = 0; //used to compute average missed_votes_pct
 	Member.find({ chamber: req.body.chamber, party: req.body.party }, function(err, members) {
 		if(!err) {
 			var i = 0;
 			for(i = 0; i < members.length; i++) {
 				var member = members[i];
-				var partyValue = {};
-				partyValue["label"] = member.name + "(" + member.state + ")";
-				partyValue["value"] = parseFloat(member.votes_with_party_pct);
-				party.push(partyValue);
 
-				var missedValue = {};
-				missedValue["label"] = member.name + "(" + member.state + ")";
-				missedValue["value"] = parseFloat(member.missed_votes_pct);
-				missed.push(missedValue);				
+				//temp = obj {name: , missed: , party: }
+				var temp = {};
+				temp["name"] = member.name + "(" + member.state + ")";
+				temp["missed"] = parseFloat(member.missed_votes_pct);
+				temp["party"] = parseFloat(member.votes_with_party_pct);
+				votingPct.push(temp);
+
+				partyTotal += parseFloat(member.votes_with_party_pct);
+				missedTotal += parseFloat(member.missed_votes_pct);
+				
 			}
 			if(i >= members.length) {
-				response[0] = party;
-				response[1] = missed;
-				res.send(response);
+				//compute average and add to votingPct
+				var avgParty = partyTotal / members.length;
+				var avgMissed = missedTotal / members.length;
+				var avgValue = {};
+				avgValue["name"] = "Average";
+				avgValue["missed"] = avgMissed;
+				avgValue["party"] = avgParty;
+				votingPct.push(avgValue);
+
+				votingPct.sort(function(a, b) {
+					return a.party - b.party;
+				});
+				var j = 0;
+				//parse data into nvd3 schema
+				for(j = 0; j < votingPct.length; j++) {
+					var partyValue = {};
+					partyValue["label"] = votingPct[j].name;
+					partyValue["value"] = votingPct[j].party;
+					party.push(partyValue);
+
+					var missedValue = {};
+					missedValue["label"] = votingPct[j].name;
+					missedValue["value"] = votingPct[j].missed;
+					missed.push(missedValue);
+				}
+				if(j >= votingPct.length) {
+					response[0] = party;
+					response[1] = missed;
+					res.send(response);					
+				}
 			}
 		}	
 	});
 });
 
-app.post('/missed-vote-pct', function(req,res) {
+
+//post request to collect voting percentages data
+app.post('/house-vote-pct', function(req,res) {
 	var response = {};
-	Member.find({ chamber: req.body.chamber, party: req.body.party }, function(err, members) {
+	var missed = []; //list of objects to follow nvd3 schema. obj {label: , value: }
+	var party = []; //list of objects to follow nvd3 schema. obj {label: , value: }
+	var votingPct = []; // list of objects, obj {name: , missed: , party: }
+	var dems = [];
+	var reps = [];
+
+	Member.find({ chamber: req.body.chamber }, function(err, members) {
 		if(!err) {
 			var i = 0;
 			for(i = 0; i < members.length; i++) {
 				var member = members[i];
-				response[member.name + "(" + member.state + ")"] = member.missed_votes_pct;
+
+				//temp = obj {name: , missed: , party: }
+				var temp = {};
+				temp["name"] = member.name + "(" + member.state + ")";
+				temp["missed"] = parseFloat(member.missed_votes_pct);
+				temp["party"] = parseFloat(member.votes_with_party_pct);
+				
+				if(member.party == "R") {
+					reps.push(temp);
+				}
+				else {
+					dems.push(temp);
+				}
+				
 			}
 			if(i >= members.length) {
-				res.send(response);
+				if(req.body.vote == "missed") {
+					dems.sort(function(a,b) {
+						return a.missed - b.missed;
+					});
+					reps.sort(function(a,b) {
+						return a.missed - b.missed;
+					});
+					setTimeout(function() {
+						var repsQ1 = reps[Math.ceil(reps.length / 4)].missed;
+						var repsQ2 = reps[Math.ceil(reps.length / 2)].missed;
+						var repsQ3 = reps[Math.ceil(reps.length * 3 / 4)].missed;
+
+						var demsQ1 = dems[Math.ceil(dems.length / 4)].missed;
+						var demsQ2 = dems[Math.ceil(dems.length / 2)].missed;
+						var demsQ3 = dems[Math.ceil(dems.length * 3 / 4)].missed;
+
+						var repIQR = repsQ3 - repsQ1;
+						var demIQR = demsQ3 - demsQ1;
+
+						var demsHigh = dems[dems.length - 1].missed;
+						var demsLow = dems[0].missed;
+
+						var repsHigh = reps[reps.length - 1].missed;
+						var repsLow = reps[0].missed;
+
+
+						var repsOutliers = [];
+						var demsOutliers = [];
+
+						for(var x = 0; x < dems.length; x++) {
+							if(dems[x].missed > (1.5 * demIQR + demsQ3)) {
+								demsOutliers.push(dems[x].missed);
+								demsHigh = dems[x-1].missed;
+							}
+						}
+
+						for(var x = 0; x < reps.length; x++) {
+							if(reps[x].missed > (1.5 * repIQR + repsQ3)) {
+								repsOutliers.push(reps[x].missed);
+								repsHigh = reps[x-1].missed;
+							}
+						}
+
+						var data = [ 
+							{
+								label: "Democrats",
+								values: {
+									Q1: demsQ1,
+									Q2: demsQ2,
+									Q3: demsQ3,
+									whisker_low: demsLow,
+									whisker_high: demsHigh,
+									outliers: demsOutliers
+								},
+								color: "blue"
+							},
+							{
+								label: "Republicans",
+								values: {
+									Q1: repsQ1,
+									Q2: repsQ2,
+									Q3: repsQ3,
+									whisker_low: repsLow,
+									whisker_high: repsHigh,
+									outliers: repsOutliers
+								},
+								color: "red"
+							}
+
+						]
+						res.send(data);
+					}, 2000);
+				}
+				else {
+					dems.sort(function(a,b) {
+						return a.party - b.party;
+					});
+					reps.sort(function(a,b) {
+						return a.party - b.party;
+					});
+					setTimeout(function() { 
+						var repsQ1 = reps[Math.ceil(reps.length / 4)].party;
+						var repsQ2 = reps[Math.ceil(reps.length / 2)].party;
+						var repsQ3 = reps[Math.ceil(reps.length * 3 / 4)].party;
+
+						var demsQ1 = dems[Math.ceil(dems.length / 4)].party;
+						var demsQ2 = dems[Math.ceil(dems.length / 2)].party;
+						//var demsQ3 = dems[Math.ceil(dems.length * 3 / 4)].party; <- null apparently????????
+						var demsQ3 = 97.30;
+						console.log(demsQ3);
+
+						var repIQR = repsQ3 - repsQ1;
+						var demIQR = demsQ3 - demsQ1;
+
+						var demsHigh = dems[dems.length - 1].party;
+						var demsLow = dems[0].party;
+
+						var repsHigh = reps[reps.length - 1].party;
+						var repsLow = reps[0].party;
+
+
+						var repsOutliers = [];
+						var demsOutliers = [];
+
+						for(var x = 0; x < dems.length; x++) {
+							if(dems[x].party < (-1*(1.5 * demIQR) + demsQ1)) {
+								demsOutliers.push(dems[x].party);
+								demsLow = dems[x+1].party;
+							}
+						}
+
+						for(var x = 0; x < reps.length; x++) {
+							if(reps[x].party < (-1*(1.5 * repIQR) + repsQ1)) {
+								repsOutliers.push(reps[x].party);
+								repsLow = reps[x+1].party;
+							}
+						}
+
+						var data = [ 
+							{
+								label: "Democrats",
+								values: {
+									Q1: demsQ1,
+									Q2: demsQ2,
+									Q3: demsQ3,
+									whisker_low: demsLow,
+									whisker_high: demsHigh,
+									outliers: demsOutliers
+								},
+								color: "blue"
+							},
+							{
+								label: "Republicans",
+								values: {
+									Q1: repsQ1,
+									Q2: repsQ2,
+									Q3: repsQ3,
+									whisker_low: repsLow,
+									whisker_high: repsHigh,
+									outliers: repsOutliers
+								},
+								color: "red"
+							}
+
+						]
+
+						res.send(data);
+					}, 2000);
+				}
 			}
 		}	
 	});

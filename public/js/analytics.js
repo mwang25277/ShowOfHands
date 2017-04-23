@@ -3,23 +3,28 @@
    var app = angular.module('analyticsApp', ['nvd3']);
    app.controller('analyticsCtrl', function($scope, $http, $window) {
       $scope.getSenGraphs = function() {
-        var requests = 0;
-        var partyD = {};
-        var partyR = {};
-        var missedD = {};
-        var missedR = {};
-        $http.post('/party-vote-pct', { chamber: "senate", party: "D" } ).then(function( response ) {
+        $http.post('/senate-vote-pct', { chamber: "senate", party: "D" } ).then(function( response ) {
           console.log(response);
           // partyD = response.data;
           // requests = requests + 1;
           // console.log(partyD);
-          $scope.options = {
+          $scope.demSenOptions = {
               chart: {
                   type: 'multiBarChart',
                   height: 450,
                   x: function(d){return d.label;},
                   y: function(d){return d.value;},
                   stacked: false,
+                  xAxis: {
+                      axisLabel: 'Members of Congress'
+                  },
+                  yAxis: {
+                      axisLabel: 'Voting Percentage (%)'
+                  }
+              },
+              title: {
+                enable: true,
+                text: 'Senate Voting Percentages: Democrats'
               }
           };
           console.log(response.data[0]);
@@ -35,21 +40,29 @@
           ]
         });
 
-        $http.post('/party-vote-pct', { chamber: "senate", party: "R" } ).then(function( response ) {
-          console.log(response);
-          // partyD = response.data;
-          // requests = requests + 1;
+        $http.post('/senate-vote-pct', { chamber: "senate", party: "R" } ).then(function( response ) {
+          //console.log(response);
           // console.log(partyD);
-          $scope.options = {
+          $scope.repSenOptions = {
               chart: {
                   type: 'multiBarChart',
                   height: 450,
                   x: function(d){return d.label;},
                   y: function(d){return d.value;},
                   stacked: false,
+                  xAxis: {
+                      axisLabel: 'Members of Congress'
+                  },
+                  yAxis: {
+                      axisLabel: 'Voting Percentage (%)'
+                  }
+              },
+              title: {
+                enable: true,
+                text: 'Senate Voting Percentages: Republicans'
               }
           };
-          console.log(response.data[0]);
+          //console.log(response.data[0]);
           $scope.repSen = [
             {
               key: "party",
@@ -63,27 +76,58 @@
             }
           ]
         });
+      };
 
-        // $http.post('/missed-vote-pct', { chamber: "senate", party: "D"} ).then(function( response ) {
-        //   missedD = response.data;
-        //   requests = requests + 1;
-        // });
-        // $http.post('/party-vote-pct', { chamber: "senate", party: "R"} ).then(function( response ) {
-        //   partyR = response.data;
-        //   requests = requests + 1;
-        // });
+      $scope.getHouseGraphs = function() {
+        $http.post('/house-vote-pct', { chamber: "house", vote: "party" } ).then(function( response ) {
+          console.log(response);
+          // partyD = response.data;
+          // requests = requests + 1;
+          // console.log(partyD);
+          $scope.partyOptions = {
+              chart: {
+                  type: 'boxPlotChart',
+                  height: 450,
+                  x: function(d){return d.label;},
+                  //y: function(d){return d.value;},
+                  yAxis: {
+                      axisLabel: 'Voting Percentage (%)'
+                  }
+              },
+              "color": [
+                "darkblue",
+                "darkred"
+              ],
+              title: {
+                enable: true,
+                text: 'House of Reps: Voting with Party Percentages'
+              }
+          };
+          console.log(response.data);
+          $scope.party = response.data;
+        });
 
-        // $http.post('/missed-vote-pct', { chamber: "senate", party: "R"} ).then(function( response ) {
-        //   missedR = response.data;
-        //   requests = requests + 1;
-        // });
-        // console.log(requests);
-        // //if(requests == 4) { //once all posts have finished
-        //   console.log(partyR);
-        //   console.log(partyD);
-
-        //   $scope.$apply();
-        //}
+        $http.post('/house-vote-pct', { chamber: "house", vote: "missed" } ).then(function( response ) {
+          //console.log(response);
+          // console.log(partyD);
+          $scope.missedOptions = {
+              chart: {
+                  type: 'boxPlotChart',
+                  height: 450,
+                  x: function(d){return d.label;},
+                  //y: function(d){return d.value;},
+                  yAxis: {
+                      axisLabel: 'Voting Percentage (%)'
+                  }
+              },
+              title: {
+                enable: true,
+                text: 'House of Reps: Missed Voting Percentages'
+              }
+          };
+          //console.log(response.data[0]);
+          $scope.missed = response.data;
+        });
       };
    });
 
