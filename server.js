@@ -34,42 +34,47 @@ app.post('/people', function(req, res) {
   //console.log("Chamber: " + req.body.chamber);
   // console.log("State: " + req.body.state);
   //get list of all members in specified chamber
-  congressClient.memberLists({
-    congressNumber: 115,
-    chamber: req.body.chamber
-  }).then(function(data) {
-    //console.log(data);
-    //iterate through members and add the members of the specified state to ppl
-    var ppl = [];
-    var i;
-    for (i = 0; i < data.results[0].members.length; i++) {
-      if (data.results[0].members[i].state == req.body.state) {
-        ppl.push(data.results[0].members[i]);
-      }
-    }
-    res.send(ppl);
-  }).catch(function() {
-    console.log("Promise rejection");
+  // congressClient.memberLists({
+  //   congressNumber: 115,
+  //   chamber: req.body.chamber
+  // }).then(function(data) {
+  //   //console.log(data);
+  //   //iterate through members and add the members of the specified state to ppl
+  //   var ppl = [];
+  //   var i;
+  //   for (i = 0; i < data.results[0].members.length; i++) {
+  //     if (data.results[0].members[i].state == req.body.state) {
+  //       ppl.push(data.results[0].members[i]);
+  //     }
+  //   }
+  //   res.send(ppl);
+  // }).catch(function(err) {
+  //   console.log("Promise rejection");
+  //   console.log(err);
+  // });
+
+  Member.find({chamber: req.body.chamber, state: req.body.state }, function(err, members) {
+  	res.send(members);
   });
 });
-//get the person's twitter profile image using his/her twitter screen name
-app.post('/img', function(req, res) {
-  var twitName = req.body.twitName;
-  twitClient.get('users/lookup', {
-    screen_name: twitName
-  }, function(error, tweets, response) {
-    if (!error) {
-      //console.log(tweets[0].profile_image_url);
-      //change the url to get the original (not resized) image
-      var imgUrl = tweets[0].profile_image_url;
-      imgUrl = imgUrl.replace("_normal", "");
-      //console.log(imgUrl);
-      res.send(imgUrl);
-    } else {
-      res.send("http://placehold.it/350");
-    }
-  });
-});
+// //get the person's twitter profile image using his/her twitter screen name
+// app.post('/img', function(req, res) {
+//   var twitName = req.body.twitName;
+//   twitClient.get('users/lookup', {
+//     screen_name: twitName
+//   }, function(error, tweets, response) {
+//     if (!error) {
+//       //console.log(tweets[0].profile_image_url);
+//       //change the url to get the original (not resized) image
+//       var imgUrl = tweets[0].profile_image_url;
+//       imgUrl = imgUrl.replace("_normal", "");
+//       //console.log(imgUrl);
+//       res.send(imgUrl);
+//     } else {
+//       res.send("http://placehold.it/350");
+//     }
+//   });
+// });
 var Member = mongoose.model('member', {
   member_id: String,
   name: String,
@@ -81,6 +86,7 @@ var Member = mongoose.model('member', {
   twitter: String,
   votes_with_party_pct: String,
   missed_votes_pct: String,
+  imgUrl: String
 });
 var Bill = mongoose.model('bill', {
   congress: String,
@@ -164,16 +170,16 @@ app.post('/update-db', function(req, res) {
   Bill.collection.remove();
   Vote.collection.remove();
   var congressNum = 115;
-//  getMembers(Member, Vote, congressNum, "senate");
-//  getBills(Bill, congressNum, "senate", "introduced");
-//  getBills(Bill, congressNum, "senate", "updated");
+  getMembers(Member, Vote, congressNum, "senate");
+  getBills(Bill, congressNum, "senate", "introduced");
+  getBills(Bill, congressNum, "senate", "updated");
   getBills(Bill, congressNum, "senate", "passed");
-//  getBills(Bill, congressNum, "senate", "major");
-//  getMembers(Member, Vote, congressNum, "house");
-//  getBills(Bill, congressNum, "house", "introduced");
-//  getBills(Bill, congressNum, "house", "updated");
-//  getBills(Bill, congressNum, "house", "passed");
-//  getBills(Bill, congressNum, "house", "major");
+  getBills(Bill, congressNum, "senate", "major");
+  getMembers(Member, Vote, congressNum, "house");
+  getBills(Bill, congressNum, "house", "introduced");
+  getBills(Bill, congressNum, "house", "updated");
+  getBills(Bill, congressNum, "house", "passed");
+  getBills(Bill, congressNum, "house", "major");
 });
 
 app.post('/get-images', function(req, res) {
@@ -204,8 +210,9 @@ function getVotes(Vote, _mem) {
         });
       }
     }
-  }).catch(function() {
+  }).catch(function(err) {
     console.log("Promise rejection");
+    console.log(err);
   });
 }
 
@@ -260,8 +267,9 @@ function getBills(Bill, congressNum, _chamber, _type) {
         }
       });
     }
-  }).catch(function() {
+  }).catch(function(err) {
     console.log("Promise rejection");
+    console.log(err);
   });
 }
 
@@ -273,8 +281,7 @@ function getMembers(Member, Vote, congressNum, _chamber) {
     for (var i = 0; i < data.results[0].members.length; i++) {
       var memb = new Member({
         member_id: data.results[0].members[i].id,
-        name: data.results[0].members[i].first_name + " " + data.results[
-          0].members[i].last_name,
+        name: data.results[0].members[i].first_name + " " + data.results[0].members[i].last_name,
         state: data.results[0].members[i].state,
         chamber: _chamber,
         party: data.results[0].members[i].party,
@@ -282,7 +289,8 @@ function getMembers(Member, Vote, congressNum, _chamber) {
         website: data.results[0].members[i].url,
         twitter: data.results[0].members[i].twitter_account,
         votes_with_party_pct: data.results[0].members[i].votes_with_party_pct,
-        missed_votes_pct: data.results[0].members[i].missed_votes_pct
+        missed_votes_pct: data.results[0].members[i].missed_votes_pct,
+        imgUrl: "http://placehold.it/350"
       });
       getVotes(Vote, data.results[0].members[i].id);
       memb.save(function(err) {
@@ -293,49 +301,53 @@ function getMembers(Member, Vote, congressNum, _chamber) {
         }
       });
     }
-  }).catch(function() {
+  }).catch(function(err) {
     console.log("Promise rejection");
+    console.log(err);
   });
 }
 
 function getImages() {
-	var stream = Member.find().stream();
+	var stream = Member.find().cursor();
 	var counter = 0;
 	stream.on('data', function (doc) {
-    //console.log(doc);
-    var imgUrl_ = "";
-    twitClient.get('users/lookup', { screen_name: doc.twitter}).then(function(error, tweets, response) {
-    	if (!error) {
-		    //console.log(tweets[0].profile_image_url);
-		    //change the url to get the original (not resized) image
-		    imgUrl_ = tweets[0].profile_image_url;
-		    imgUrl_ = imgUrl_.replace("_normal", "");
-		  }
-		  else {
-		  	imgUrl_ = "http://placehold.it/350";
-		  }
-		Member.update({id_: doc.id_}, {$set: {imgUrl: imgUrl_}}, {upsert: true}, function(err) {
-	    	if(err) {
-	    		console.log(err);
-	    	}
-	    	else {
-	    		counter++;
-			    console.log(counter);
-			    if(counter >= 542) {
-					console.log("Completed getting images.");
-					stream.close();
-				}
-	    	}
-	    });
-	    console.log(doc.name);
-	    //res.send(imgUrl);
-	    
-	}).catch(function(err) {
-    	console.log("Promise rejection");
-    	console.log(err);
-	});
-});
+	    //console.log(doc);
+	    var imgUrl_ = "";
+	    if( doc.twitter != null && doc.twitter != "" && doc.twitter != undefined) {
+		    twitClient.get('users/show', { screen_name: doc.twitter}).then(function(error, tweets, response) {
+		    	if (!error) {
+		    		console.log(doc.name);
+				    //console.log(tweets[0].profile_image_url);
+				    //change the url to get the original (not resized) image
+				    imgUrl_ = tweets[0].profile_image_url;
+				    imgUrl_ = imgUrl_.replace("_normal", "");
 
+				    Member.update({id_: doc.id_}, {$set: {imgUrl: imgUrl_}}, {upsert: true}, function(err) {
+				    	if(err) {
+				    		console.log(err);
+				    	}
+				    	else {
+				    		counter++;
+						    console.log(counter);
+						    if(counter >= 542) {
+								console.log("Completed getting images.");
+								stream.close();
+							}
+				    	}
+				    });
+			    }
+			    
+			}).catch(function(err) {
+		    	console.log("Promise rejection");
+		    	console.log(err);
+			});
+		}
+	});
+	stream.on('close', function(err) {
+		stream.destroy();
+	});
+
+}
 
 app.post('/party-distr', function(req, res) {
   var rep = 0,
@@ -403,4 +415,48 @@ app.post('/bill-contr', function(req, res) {
         });
       }
   });
+});
+
+app.post('/party-vote-pct', function(req,res) {
+	var response = {};
+	var missed = [];
+	var party = [];
+	Member.find({ chamber: req.body.chamber, party: req.body.party }, function(err, members) {
+		if(!err) {
+			var i = 0;
+			for(i = 0; i < members.length; i++) {
+				var member = members[i];
+				var partyValue = {};
+				partyValue["label"] = member.name + "(" + member.state + ")";
+				partyValue["value"] = parseFloat(member.votes_with_party_pct);
+				party.push(partyValue);
+
+				var missedValue = {};
+				missedValue["label"] = member.name + "(" + member.state + ")";
+				missedValue["value"] = parseFloat(member.missed_votes_pct);
+				missed.push(missedValue);				
+			}
+			if(i >= members.length) {
+				response[0] = party;
+				response[1] = missed;
+				res.send(response);
+			}
+		}	
+	});
+});
+
+app.post('/missed-vote-pct', function(req,res) {
+	var response = {};
+	Member.find({ chamber: req.body.chamber, party: req.body.party }, function(err, members) {
+		if(!err) {
+			var i = 0;
+			for(i = 0; i < members.length; i++) {
+				var member = members[i];
+				response[member.name + "(" + member.state + ")"] = member.missed_votes_pct;
+			}
+			if(i >= members.length) {
+				res.send(response);
+			}
+		}	
+	});
 });

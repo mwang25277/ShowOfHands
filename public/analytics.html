@@ -7,11 +7,13 @@
     <script>document.write('<base href="' + document.location + '" />');</script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.3/nv.d3.min.css"/>
     <!-- Our CSS -->
-    <link rel="stylesheet" href="css/people.css" />
+    <link rel="stylesheet" href="css/analytics.css"/>
   </head>
 
-  <body>
+  <body data-ng-app="analyticsApp">
     <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -26,19 +28,50 @@
           <li class="nav-item">
             <a class="nav-link" href="bills.html">Bills</a>
           </li>
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="people.html">People</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" href="#">Analytics<span class="sr-only">(current)</span></a>
           </li>
         </ul>
       </div>
     </nav>
 
-    <div class="container-fluid">
+    <div class="container-fluid" data-ng-controller="analyticsCtrl">
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Voting %</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" data-toggle="tab" href="#members" ng-click="getSenGraphs()">Senate</a>
+            <a class="dropdown-item" href="#menu3" ng-click="getHouseGraphs()">House of Reps</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#bills" role="tab">Bills</a>
+        </li>
+        
+      </ul>
 
-      
+      <div class="tab-content">
+        <div id="members" class="tab-pane fade active">
+          <h3>Voting Percentages: Senate</h3>
+          <nvd3 options="options" data="demSen"></nvd3>
+          <nvd3 options="options" data="repSen"></nvd3>
+        </div>
+        <div id="bills" class="tab-pane fade">
+          <h3>Menu 1</h3>
+          <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+        <div id="menu2" class="tab-pane fade">
+          <h3>Menu 2</h3>
+          <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+        </div>
+        <div id="menu3" class="tab-pane fade">
+          <h3>Menu 3</h3>
+          <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+        </div>
+      </div>
     </div>
 
 
@@ -49,15 +82,20 @@
     </footer>
 
     <!-- Angular -->
-    <!-- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script> -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <!--- USMap plugin -->
-    <script src="js/usmap/jquery.twism.js"></script>
+
+<!--    <script src="js/usmap/jquery.twism.js"></script> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.3/nv.d3.min.js"></script>
+    <script src="https://rawgit.com/krispo/angular-nvd3/v1.0.7/dist/angular-nvd3.js"></script>
     <!-- Our js -->
-    <script src="js/people.js"></script>
+    <script src="js/analytics.js"></script>
   </body>
 
 </html>

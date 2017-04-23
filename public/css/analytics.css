@@ -1,0 +1,42 @@
+/* Sticky footer style
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  /*background-color: #FFF;*/
+  border-color: #e7e7e7;
+  border-radius: 4px;
+}
+
+.container .text-muted {
+    margin: 20px 0;
+}
+
+
+/* Stripped background style
+-------------------------------------------------- */
+body {
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(255,0,0,0.1),
+      rgba(255,0,0,0.1) 150px,
+      #FFF 150px,
+      #FFF 300px
+    );
+}
+
+.container-fluid {
+  background-color: white;
+  
+}
