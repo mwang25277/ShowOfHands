@@ -21,7 +21,7 @@ function loadPeople(state, choice) {
       person = data[i];
 
       var str = "<div class='card text-center col-12 col-sm-6 col-md-3'>";
-      str += "<img class='peopleImg round img-fluid card-img-top' src='" + person.imgUrl + "'>";
+      //str += "<img class='peopleImg round img-fluid card-img-top' src='" + person.imgUrl + "'>";
       str += "<div class='card-block'>";
       str += "<h4 class='card-title'>" + person.name + " (" + person.party + ")</h4>";
       str += "<p class='card-text'>" + state + "</p>";
