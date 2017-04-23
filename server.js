@@ -123,7 +123,7 @@ app.get('/getPage', function(req, res) {
         }).then(function(data) {
           console.log(data.results[0].congressdotgov_url);
           var site = data.results[0].congressdotgov_url;
-          
+
           res.send(site);
           console.log("sent site");
         });
@@ -146,21 +146,14 @@ app.get('/bills', function(req, res){
 		var i;
 	for (i = 0; i < docs.length; ++i) {
 		var j = i;
-        
+
       }
-
-
 
       	if (i == docs.length)
 			res.send(docs);
 
 	});
-	
 
-
-
-		
-	
 });
 
 
@@ -336,7 +329,7 @@ function getImages() {
 				    	}
 				    });
 			    }
-			    
+
 			}).catch(function(err) {
 		    	console.log("Promise rejection");
 		    	console.log(err);
@@ -434,14 +427,14 @@ app.post('/party-vote-pct', function(req,res) {
 				var missedValue = {};
 				missedValue["label"] = member.name + "(" + member.state + ")";
 				missedValue["value"] = parseFloat(member.missed_votes_pct);
-				missed.push(missedValue);				
+				missed.push(missedValue);
 			}
 			if(i >= members.length) {
 				response[0] = party;
 				response[1] = missed;
 				res.send(response);
 			}
-		}	
+		}
 	});
 });
 
@@ -457,6 +450,6 @@ app.post('/missed-vote-pct', function(req,res) {
 			if(i >= members.length) {
 				res.send(response);
 			}
-		}	
+		}
 	});
 });
