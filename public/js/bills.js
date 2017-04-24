@@ -79,27 +79,31 @@
 
 
       $scope.drawCanvas = function(billID) {
+
+        $scope.check = true;
         $http({
           url: '/bill-contr',
           method: 'POST',
           params: { bill_id : billID }
         }).then(function successCallback(response) {
           console.log(response.data);
-          var data = [
-            {"Yes":response.data.yes_votes, "color":"green"},
-            {"No":response.data.no_votes, "color":"orange"},
-            {"Abstain":response.data.abst_votes, "color":"grey"}
-          ];
+          if (response.data.abst_votes != 100) {
+            var data = [
+              {"Yes":response.data.yes_votes, "color":"green"},
+              {"No":response.data.no_votes, "color":"orange"},
+              {"Abstain":response.data.abst_votes, "color":"black"}
+            ];
 
-          var pie_data = [];
-          pie_data[0] = response.data.yes_votes;
-          pie_data[1] = response.data.no_votes;
-          pie_data[2] = response.data.abst_votes;
+            var pie_data = [];
+            pie_data[0] = response.data.yes_votes;
+            pie_data[1] = response.data.no_votes;
+            pie_data[2] = response.data.abst_votes;
 
-          var labels = [];
-          labels[0] = "Yes";
-          labels[1] = "No";
-          labels[2] = "Abstain";
+          } else {
+            var data = [{"abst":response.data.abst_votes, "color":"grey"}];
+            var pie_data = [];
+            pie_data[0] = response.data.abst_votes;
+          }
 
           var domElem = "#pc"+billID;
           console.log(domElem);

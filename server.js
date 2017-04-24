@@ -338,7 +338,7 @@ app.post('/party-distr', function(req, res) {
 
 app.post('/bill-contr', function(req, res) {
   var bill_id = req.query.bill_id;
-	Bill.find({ 'type': 'passed', 'id':bill_id }, function (err, bills) {
+	Bill.find({'id':bill_id }, function (err, bills) {
     var bill_args = bill_id.split("-");
     congressClient.billDetails({
       congressNumber: bill_args[1],
@@ -346,26 +346,34 @@ app.post('/bill-contr', function(req, res) {
     }).then(function(data) {
       var y, n, a, y_perc, n_perc, a_perc;
       console.log(data.results[0]);
-      if (data.results[0].votes.length != 0) {
-        var res_arr = new Array();
-        y = data.results[0].votes[0].total_yes;
-        n = data.results[0].votes[0].total_no;
-        a = data.results[0].votes[0].total_not_voting;
+      if (data.results[0].house_passage!="" || data.results[0].senate_passage!="") {
+        if (data.results[0].votes.length != 0) {
+          var res_arr = new Array();
+          y = data.results[0].votes[0].total_yes;
+          n = data.results[0].votes[0].total_no;
+          a = data.results[0].votes[0].total_not_voting;
 
-        total = Number(y)+Number(n)+Number(a)
+          total = Number(y)+Number(n)+Number(a)
 
-        y_perc = ((y / total) * 100);
-        n_perc = ((n / total) * 100);
-        a_perc = ((a / total) * 100);
+          y_perc = ((y / total) * 100);
+          n_perc = ((n / total) * 100);
+          a_perc = ((a / total) * 100);
 
-        console.log(y_perc);
-        console.log(n_perc);
-        console.log(a_perc);
+          console.log(y_perc);
+          console.log(n_perc);
+          console.log(a_perc);
+        } else {
+          y_perc = 100;
+          n_perc = 0;
+          a_perc = 0;
+
+          console.log(y_perc);
+          console.log(n_perc);
+        }
       } else {
-        y_perc = 100;
-
-        console.log(y_perc);
-        console.log(n_perc);
+        a_perc = 100;
+        y_perc = 0;
+        n_perc = 0;
       }
 
       res.send({'yes_votes':y_perc, 'no_votes':n_perc, 'abst_votes':a_perc});
