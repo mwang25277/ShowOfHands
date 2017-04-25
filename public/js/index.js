@@ -22,19 +22,19 @@
     }, function errorCallback(response) {
       console.log(response);
     });
-    // $scope.loadPage = function(billID) {
-    //   console.log(billID);
-    //   $http({
-    //     url: '/getPage',
-    //     method: 'GET',
-    //     params: {
-    //       id: billID
-    //     }
-    //   }).then(function successCallback(response) {
-    //     console.log(response.data);
-    //     window.location.href = (response.data);
-    //   });
-    // };
+    $scope.loadPage = function(billID) {
+      console.log(billID);
+      $http({
+        url: '/getPage',
+        method: 'GET',
+        params: {
+          id: billID
+        }
+      }).then(function successCallback(response) {
+        console.log(response.data);
+        window.location.href = (response.data);
+      });
+    };
   });
 
   app.controller('peopleCtrl', function($scope, $http, $window) {
@@ -77,7 +77,6 @@
             }
           }
         }
-        console.log($scope.state);
         $http({
           url: '/get-members',
           method: 'GET',
@@ -93,7 +92,6 @@
               $scope.reps.push($scope.members[i]);
             }
           }
-          console.log($scope.senators);
         }, function errorCallback(respones) {
           console.log(response);
         });

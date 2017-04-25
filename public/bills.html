@@ -61,6 +61,9 @@
                 <li class="nav-item">
                   <a class="nav-link" ng-class="class5" href="#{{bill.id}}" ng-click="view=4; changeClass()">Actions</a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" ng-class="class6" href="#{{bill.id}}" ng-click="view=5; drawCanvas(bill.id)">Analytics</a>
+                </li>
               </ul>
             </div>
             <div class="card-block" ng-show="view==1">
@@ -90,9 +93,28 @@
               <input type = "button" value = "View Bill Page" class="btn btn-primary" ng-click= "loadPage(bill.id)" />
             </div>
 
-          </div>               
+            <div class="card-block" ng-show="view==5">
+              <h4 class="card-title">{{bill.id}}</h4>
+              <h3 class="card-title">Bill Controversy</h3>
+              <div class="container">
+                <div class="row">
+                  <div class="col-6">
+                    <div id="pc{{bill.id}}"></div>
+                  </div>
+                  <div class="col-4 offset-2">
+                    <div><div style="width:20px;height:20px;background-color:green;"></div><p>Yes</p></div>
+                    <div><div style="width:20px;height:20px;background-color:orange;"></div><p>No</p></div>
+                    <div><div style="width:20px;height:20px;background-color:black;"></div><p>Abstain</p></div>
+                    <div><div style="width:20px;height:20px;background-color:grey;"></div><p>No Action to Date</p></div>
+                  </div>
+                </div>
+              </div>
+              <input type = "button" value = "View Bill Page" class="btn btn-primary" ng-click= "loadPage(bill.id)" />
+            </div>
+
+          </div>
         </div>
-        
+
       </div>
     </div>
 
@@ -102,7 +124,7 @@
       </div>
     </footer>
 
-  
+
 
     <!-- Angular -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
@@ -110,6 +132,10 @@
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <!-- D3 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.3/nv.d3.min.js"></script>
+    <script src="https://rawgit.com/krispo/angular-nvd3/v1.0.7/dist/angular-nvd3.js"></script>
     <!-- My js -->
     <script src="js/bills.js" type="text/javascript"></script>
   </body>
