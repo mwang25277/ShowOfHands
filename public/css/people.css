@@ -20,6 +20,17 @@
   width: 400px;
 }
 
+#backButton {
+  margin-left: 20px;
+  margin-top: 50px;
+
+  float: left;
+}
+
+#chooseState h1{
+  padding-right: 107px;
+}
+
 h1 {
     margin: .67em 0;
 }

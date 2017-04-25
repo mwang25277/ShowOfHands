@@ -36,24 +36,7 @@ app.post('/people', function(req, res) {
   	res.send(members);
   });
 });
-// //get the person's twitter profile image using his/her twitter screen name
-// app.post('/img', function(req, res) {
-//   var twitName = req.body.twitName;
-//   twitClient.get('users/lookup', {
-//     screen_name: twitName
-//   }, function(error, tweets, response) {
-//     if (!error) {
-//       //console.log(tweets[0].profile_image_url);
-//       //change the url to get the original (not resized) image
-//       var imgUrl = tweets[0].profile_image_url;
-//       imgUrl = imgUrl.replace("_normal", "");
-//       //console.log(imgUrl);
-//       res.send(imgUrl);
-//     } else {
-//       res.send("http://placehold.it/350");
-//     }
-//   });
-// });
+
 var Member = mongoose.model('member', {
   member_id: String,
   name: String,
@@ -382,7 +365,7 @@ app.post('/bill-contr', function(req, res) {
   });
 });
 
-//post request to collect voting percentages data
+//post request to collect voting percentages data in the senate
 app.post('/senate-vote-pct', function(req,res) {
 	var response = {};
 	var missed = []; //list of objects to follow nvd3 schema. obj {label: , value: }
@@ -393,6 +376,7 @@ app.post('/senate-vote-pct', function(req,res) {
 	Member.find({ chamber: req.body.chamber, party: req.body.party }, function(err, members) {
 		if(!err) {
 			var i = 0;
+      //parse data into temp
 			for(i = 0; i < members.length; i++) {
 				var member = members[i];
 
@@ -417,6 +401,7 @@ app.post('/senate-vote-pct', function(req,res) {
 				avgValue["party"] = avgParty;
 				votingPct.push(avgValue);
 
+        //sort by votes with party pct
 				votingPct.sort(function(a, b) {
 					return a.party - b.party;
 				});
@@ -444,7 +429,7 @@ app.post('/senate-vote-pct', function(req,res) {
 });
 
 
-//post request to collect voting percentages data
+//post request to collect voting percentages data in the house
 app.post('/house-vote-pct', function(req,res) {
 	var response = {};
 	var missed = []; //list of objects to follow nvd3 schema. obj {label: , value: }
@@ -456,6 +441,7 @@ app.post('/house-vote-pct', function(req,res) {
 	Member.find({ chamber: req.body.chamber }, function(err, members) {
 		if(!err) {
 			var i = 0;
+      //parse data
 			for(i = 0; i < members.length; i++) {
 				var member = members[i];
 
@@ -471,17 +457,19 @@ app.post('/house-vote-pct', function(req,res) {
 				else {
 					dems.push(temp);
 				}
-
 			}
 			if(i >= members.length) {
 				if(req.body.vote == "missed") {
+          //sort by missed votes pct
 					dems.sort(function(a,b) {
 						return a.missed - b.missed;
 					});
 					reps.sort(function(a,b) {
 						return a.missed - b.missed;
 					});
+          //wait for sort
 					setTimeout(function() {
+            //box plot calculations
 						var repsQ1 = reps[Math.ceil(reps.length / 4)].missed;
 						var repsQ2 = reps[Math.ceil(reps.length / 2)].missed;
 						var repsQ3 = reps[Math.ceil(reps.length * 3 / 4)].missed;
@@ -503,20 +491,29 @@ app.post('/house-vote-pct', function(req,res) {
 						var repsOutliers = [];
 						var demsOutliers = [];
 
+            //collect outliers
+            //we only really care about people with higher miss rates
+            var origDemsHigh = demsHigh;
 						for(var x = 0; x < dems.length; x++) {
 							if(dems[x].missed > (1.5 * demIQR + demsQ3)) {
 								demsOutliers.push(dems[x].missed);
-								demsHigh = dems[x-1].missed;
+                if(origDemsHigh == demsHigh) {
+								  demsHigh = dems[x-1].missed;
+                }
 							}
 						}
 
+            var origRepsHigh = repsHigh;
 						for(var x = 0; x < reps.length; x++) {
 							if(reps[x].missed > (1.5 * repIQR + repsQ3)) {
 								repsOutliers.push(reps[x].missed);
-								repsHigh = reps[x-1].missed;
+                if(origRepsHigh == repsHigh) {
+								  repsHigh = reps[x-1].missed;
+                }
 							}
 						}
-
+            repsOutliers.splice(repsOutliers.length-3,repsOutliers.length-1); //some data seems wrong so i'm eliminating them
+            //construct data into d3 schema
 						var data = [
 							{
 								label: "Democrats",
@@ -545,16 +542,20 @@ app.post('/house-vote-pct', function(req,res) {
 
 						]
 						res.send(data);
-					}, 2000);
+					}, 1000);
 				}
 				else {
+          //sort by votes with party pct
 					dems.sort(function(a,b) {
 						return a.party - b.party;
 					});
 					reps.sort(function(a,b) {
 						return a.party - b.party;
 					});
+
+          //wait for sort
 					setTimeout(function() {
+            //box plot calculations
 						var repsQ1 = reps[Math.ceil(reps.length / 4)].party;
 						var repsQ2 = reps[Math.ceil(reps.length / 2)].party;
 						var repsQ3 = reps[Math.ceil(reps.length * 3 / 4)].party;
@@ -577,7 +578,7 @@ app.post('/house-vote-pct', function(req,res) {
 
 						var repsOutliers = [];
 						var demsOutliers = [];
-
+            //here, we only care about members who don't vote with their party as much
 						for(var x = 0; x < dems.length; x++) {
 							if(dems[x].party < (-1*(1.5 * demIQR) + demsQ1)) {
 								demsOutliers.push(dems[x].party);
@@ -591,6 +592,8 @@ app.post('/house-vote-pct', function(req,res) {
 								repsLow = reps[x+1].party;
 							}
 						}
+
+            repsOutliers.splice(0,4);
 
 						var data = [
 							{

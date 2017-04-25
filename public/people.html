@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/people.css" />
   </head>
 
-  <body>
+  <body data-ng-app="peopleApp">
     <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -27,7 +27,7 @@
             <a class="nav-link" href="bills.html">Bills</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="#">People <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="#" ng-click="backButton()">People <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="analytics.html">Analytics</a>
@@ -36,22 +36,25 @@
       </div>
     </nav>
 
-    <div class="container-fluid">
+    <div class="container-fluid" data-ng-controller="peopleCtrl">
 
-      <div class="row">
+      <div class="row" id="legisRow" ng-show="showLegisRow">
         <div class="col-12 text-center"><h1>Choose a Legislative Body</h1></div>
       </div>
-      <div class="row" style="display:none;">
-        <div class="col-12 text-center"><h1>Choose a State</h1></div>
+      <div class="row" id="stateRow" ng-show="showStateRow">
+        <div class="col-12 text-center" id="chooseState">
+          <button id="backButton" class="btn btn-primary" ng-click="backButton()">Back</button>
+          <h1>Choose a State</h1>
+        </div>
       </div>
 
-      <div class="row">
+      <div class="row" ng-show="showRow">
         <div class="col-12 col-lg-6">
           <div class="card text-center">
             <img class="round img-fluid card-img-top" src="/images/senate_seal.png" alt="Card image cap"> 
             <div class="card-block">
               <h4 class="card-title">Senate</h4>
-              <a id="senateLink" href="#" class="btn btn-primary">Link</a>
+              <a id="senateLink" href="#" class="btn btn-primary" ng-click="afterSelect('senate')">Select</a>
             </div>
           </div>               
         </div>
@@ -60,16 +63,28 @@
             <img class="round img-fluid card-img-top" src="/images/house_seal.png" alt="Card image cap"> 
             <div class="card-block">
               <h4 class="card-title">House of Representatives</h4>
-              <a id="houseLink" href="#" class="btn btn-primary">Link</a>
+              <a id="houseLink" href="#" class="btn btn-primary" ng-click="afterSelect('house')">Select</a>
             </div>
           </div>               
         </div>
       </div>
+
+      <div id="map" class="col-12" style="height:500px;" ng-show="showMap"></div>
+
+      <div id="bios" class="row justify-content-center" ng-show="showBios">
+         <div class='card text-center col-12 col-sm-6 col-md-3' ng-repeat="person in data">
+              <!--<img class='peopleImg round img-fluid card-img-top' src='" + person.imgUrl + "'>"-->
+            <div class='card-block'>
+              <h4 class='card-title'> {{ person.name + " (" + person.party + ")"}}</h4>
+              <p class='card-text'>{{ state }}</p>
+              <a href="{{person.website}}"' class='btn btn-primary'>Website</a>
+            </div>
+          </div>
+      </div>
+
     </div>
 
-    <div id="map" class="col-12" style="height:500px;"></div>
-
-    <div id="bios" class="row justify-content-center"></div>
+    
 
     <footer class="footer bg-faded">
       <div class="container">
@@ -78,7 +93,7 @@
     </footer>
 
     <!-- Angular -->
-    <!-- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script> -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>

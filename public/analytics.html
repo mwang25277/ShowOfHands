@@ -50,6 +50,12 @@
       </ul>
 
       <div class="tab-content">
+        <div class="jumbotron" ng-show ="welcomeJumbo">
+          <h1 class="display-3">Welcome to the Analytics Page!</h1>
+          <p class="lead">We've collected and analyzed data on voting behavior in the Senate and the House of Representatives.</p>
+          <p class="lead">To view, choose a legislative body!</p>
+          <hr class="my-4">
+        </div>
         <div id="senate" class="tab-pane fade active">
           <h3>Voting Percentages: Senate</h3>
           <nvd3 options="demSenOptions" data="demSen"></nvd3>
