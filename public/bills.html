@@ -47,7 +47,7 @@
       <div class="row" ng-init="bills = getBills()" >
 
         <!-- =============================== Bill Card ============================= -->
-        <div class="col-12 col-lg-6" ng-repeat= "bill in bills">
+        <div class="col-12 col-lg-6" ng-repeat= "bill in bills | unique : 'id'">
           <div class="card text-center" id = "{{bill.id}}">
 
             <!-- ======================== Bill Card Template ======================= -->
@@ -117,7 +117,7 @@
               <h3 class="card-title">Bill Controversy</h3>
                 <div id="pc{{bill.id}}">
                   <!-- prepare chart container -->
-                  <svg style:"height:150%;width:200%;"></svg>
+                  <svg width="300px" height="300px"></svg>
                 </div>
               <input type = "button" value = "View Bill Page" class="btn btn-primary" ng-click= "loadPage(bill.id)" />
             </div>

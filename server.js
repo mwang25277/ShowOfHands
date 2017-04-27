@@ -118,7 +118,7 @@ app.get('/getPage', function(req, res) {
           congressNumber: bill_args[1],
           billId: bill_args[0]
         }).then(function(data) {
-          console.log(data.results[0].congressdotgov_url);
+          //console.log(data.results[0].congressdotgov_url);
           var site = data.results[0].congressdotgov_url;
 
           res.send(site); //send data to client
@@ -296,7 +296,7 @@ function getImages() {
 				    	}
 				    	else {
 				    		counter++;
-						    console.log(counter);
+						    //console.log(counter);
 						    if(counter >= 542) { //check if all members were updated
 								  console.log("Completed getting images.");
 								  stream.close();
@@ -367,7 +367,7 @@ app.post('/bill-contr', function(req, res) {
       billId: bill_args[0]
     }).then(function(data) { //on data
       var y, n, a, y_perc, n_perc, a_perc;
-      console.log(data.results[0]);
+      //console.log(data.results[0]);
       if (data.results[0].house_passage!="" || data.results[0].senate_passage!="") { //if the bill has been passed
         if (data.results[0].votes.length != 0) { //if there are votes
           //store votes
@@ -384,16 +384,16 @@ app.post('/bill-contr', function(req, res) {
           n_perc = ((n / total) * 100);
           a_perc = ((a / total) * 100);
 
-          console.log(y_perc);
-          console.log(n_perc);
-          console.log(a_perc);
+          // console.log(y_perc);
+          // console.log(n_perc);
+          // console.log(a_perc);
         } else { //if the bill passed, but there are no votes, then it passed unanimously
           y_perc = 100; //set y to 100
           n_perc = 0;
           a_perc = 0;
 
-          console.log(y_perc);
-          console.log(n_perc);
+          // console.log(y_perc);
+          // console.log(n_perc);
         }
       } else {//if the vote did not pass, set abstain to 100 and deal with the data in the client
         a_perc = 100;
@@ -673,6 +673,7 @@ app.post('/house-vote-pct', function(req,res) {
 	});
 });
 
+//getting members for the home screen
 app.get('/get-members', function(req, res) {
   Member.find({
     'state': req.query.state
