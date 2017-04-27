@@ -119,7 +119,7 @@ app.get('/getPage', function(req, res) {
           billId: bill_args[0]
         }).then(function(data) {
           //console.log(data.results[0].congressdotgov_url);
-          var site = data.results[0].congressdotgov_url;
+          var site = data.results[0].congressdotgov_url;  //site is the confress.gov url
 
           res.send(site); //send data to client
           console.log("sent site");
