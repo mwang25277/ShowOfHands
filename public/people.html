@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="css/people.css" />
   </head>
 
-  <body data-ng-app="peopleApp">
+  <body data-ng-app="peopleApp"> <!-- set app module -->
+
+    <!-- ================================= Nav Menu ================================= -->
     <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -35,9 +37,12 @@
         </ul>
       </div>
     </nav>
+    <!-- =============================== End Nav Menu =============================== -->
 
-    <div class="container-fluid" data-ng-controller="peopleCtrl">
+    <!-- =============================== Main Content =============================== -->
+    <div class="container-fluid" data-ng-controller="peopleCtrl"> <!-- set controller -->
 
+      <!-- ============================ Choice Container ============================ -->
       <div class="row" id="legisRow" ng-show="showLegisRow">
         <div class="col-12 text-center"><h1>Choose a Legislative Body</h1></div>
       </div>
@@ -47,51 +52,73 @@
           <h1>Choose a State</h1>
         </div>
       </div>
+      <!-- ======================== End Choice Container ============================ -->
 
+      <!-- ========================== Content Container ============================= -->
       <div class="row" ng-show="showRow">
+        <!-- ========================= Senate Container ============================= -->
         <div class="col-12 col-lg-6">
           <div class="card text-center">
-            <img class="round img-fluid card-img-top" src="/images/senate_seal.png" alt="Card image cap"> 
+            <img class="round img-fluid card-img-top" src="/images/senate_seal.png" alt="Card image cap">
             <div class="card-block">
               <h4 class="card-title">Senate</h4>
               <a id="senateLink" href="#" class="btn btn-primary" ng-click="afterSelect('senate')">Select</a>
             </div>
-          </div>               
+          </div>
         </div>
+        <!-- ======================== End Senate Container ========================== -->
+
+        <!-- ========================== House Container ============================= -->
         <div class="col-12 col-lg-6">
           <div class="card text-center">
-            <img class="round img-fluid card-img-top" src="/images/house_seal.png" alt="Card image cap"> 
+            <img class="round img-fluid card-img-top" src="/images/house_seal.png" alt="Card image cap">
             <div class="card-block">
               <h4 class="card-title">House of Representatives</h4>
               <a id="houseLink" href="#" class="btn btn-primary" ng-click="afterSelect('house')">Select</a>
             </div>
-          </div>               
+          </div>
         </div>
+        <!-- ======================== End House Container =========================== -->
+
       </div>
+      <!-- ======================== End Content Container =========================== -->
 
+      <!-- ============================ Map Container =============================== -->
       <div id="map" class="col-12" style="height:500px;" ng-show="showMap"></div>
+      <!-- ========================== End Map Container ============================= -->
 
+      <!-- =============================== Bio Card ================================== -->
       <div id="bios" class="row justify-content-center" ng-show="showBios">
          <div class='card text-center col-12 col-sm-6 col-md-3' ng-repeat="person in data">
               <!--<img class='peopleImg round img-fluid card-img-top' src='" + person.imgUrl + "'>"-->
             <div class='card-block'>
               <h4 class='card-title'> {{ person.name + " (" + person.party + ")"}}</h4>
               <p class='card-text'>{{ state }}</p>
-              <a href="{{person.website}}"' class='btn btn-primary'>Website</a>
+              <a href="{{person.website}}" class='btn btn-primary'>Website</a>
             </div>
           </div>
       </div>
+      <!-- ============================= End Bio Card ================================ -->
 
     </div>
+    <!-- ============================== End Main Content ============================= -->
 
-    
-
+    <!-- ================================== Footer =================================== -->
     <footer class="footer bg-faded">
       <div class="container">
-        <p class="text-muted text-center">Web Science Group 3 &copy; 2017</p>
+        <div class="row">
+          <div class="col-4 text-right">
+            <img style="width:20px;height:20px;margin-top:25px;" src="./images/ShowofHandsLogo2.png" alt="logo">
+          </div>
+          <div class="col-4">
+            <p class="text-muted text-center">Copyright &copy; 2017 - RPI Web Science Team 3</p>
+          </div>
+        </div>
       </div>
     </footer>
+    <!-- ================================= End Footer ================================ -->
 
+    <!-- ================================== Scripts ================================== -->
     <!-- Angular -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
@@ -102,6 +129,7 @@
     <script src="js/usmap/jquery.twism.js"></script>
     <!-- Our js -->
     <script src="js/people.js"></script>
+    <!-- ================================== Scripts ================================== -->
   </body>
 
 </html>

@@ -1,7 +1,7 @@
 (function(angular) {
    'use strict';
-   var app = angular.module('billsApp', []);
-   app.controller('billsCtrl', function($scope, $http, $window) {
+   var app = angular.module('billsApp', []); //set app module
+   app.controller('billsCtrl', function($scope, $http, $window) { //set controller
       //used to display bills onto page
       $scope.x = 120;
       $scope.bills = [];
@@ -12,32 +12,13 @@
       $scope.class = [];
       $scope.class2 = [];
   	  $scope.changeClass = function(){
-    	/*if ($scope.class === "active"){
-      		$scope.class.pop('active');
-      		$scope.class2.push('active');
-    	}
-    	else if ($scope.class === "active"){
-      		$scope.class.pop('active');
-      		$scope.class2.push('active');
-    	}
-    	else if ($scope.class === "active"){
-      		$scope.class.pop('active');
-      		$scope.class2.push('active');
-    	}
-    	else if ($scope.class === "active"){
-      		$scope.class.pop('active');
-      		$scope.class2.push('active');
-    	}
-    	else {
-      		$scope.class.pop('active');
-      		$scope.class2.push('active');
-      	}*/
+    	   //currently does nothing
   	  }
 
 
       $scope.getBills = function(){
 
-      	$http({
+      	$http({ //get bill information from server (from DB)
       		url: '/bills',
       		method: 'GET',
       		params: {
@@ -49,21 +30,15 @@
             //$scope.sites = sites.data.sites;
       		},
       		function errorCallback(response){
-
       			console.log(response);
       		}
-
-
       	);
-
-
       }
-
 
 
       $scope.loadPage = function(billID){
         console.log(billID);
-        $http({
+        $http({ //get bill page on congress.gov
           url: '/getPage',
           method: 'GET',
           params: {
@@ -72,7 +47,9 @@
         }).then(
           function successCallback(response){
           console.log(response.data);
-          window.location.href =(response.data);
+          window.location.href = (response.data); //take user to page for bill
+          /* window.open could be used to open page in a new tab, but most pop-up blockers
+             will prevent this from running correctly, thus window.location.href was used. */
           }
         );
       }
@@ -80,14 +57,13 @@
 
       $scope.drawCanvas = function(billID) {
 
-        $scope.check = true;
-        $http({
+        $http({ //get bill vote positions from server (from DB)
           url: '/bill-contr',
           method: 'POST',
           params: { bill_id : billID }
         }).then(function successCallback(response) {
           console.log(response.data);
-          if (response.data.abst_votes != 100) {
+          if (response.data.abst_votes != 100) { // if there has been action taken on the bill
             $scope.billData = [
               {
                 "label":"Yes",
@@ -103,7 +79,7 @@
               }
             ];
 
-          } else {
+          } else { //if no action has been taken on the bill
             $scope.billData = [
               {
                 "label":"No Action to Date",
@@ -113,7 +89,8 @@
           }
 
 
-          nv.addGraph(function() {
+          nv.addGraph(function() { //create the chart
+            /* set chart parameters */
             var chart = nv.models.pieChart()
                 .x(function(d) { return d.label })
                 .y(function(d) { return d.value })
@@ -121,7 +98,7 @@
                 .labelThreshold(.05)
                 .labelType("percent");
 
-              d3.select("#pc"+billID+" svg")
+              d3.select("#pc"+billID+" svg") //get the current bill id
                   .datum($scope.billData)
                 .transition().duration(1200)
                   .call(chart);
@@ -132,6 +109,7 @@
         }, function errorCallback(response) {
           // called asynchronously if an error occurs
           // or server returns response with an error status.
+          console.log(response);
         });
       }
 

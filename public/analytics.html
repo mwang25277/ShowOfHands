@@ -14,6 +14,8 @@
   </head>
 
   <body data-ng-app="analyticsApp">
+
+      <!-- =============================== Nav Menu ==================================== -->
     <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -37,8 +39,12 @@
         </ul>
       </div>
     </nav>
+    <!-- =============================== End Nav Menu ================================== -->
 
-    <div class="container-fluid" data-ng-controller="analyticsCtrl">
+    <!-- =============================== Main Content ================================== -->
+    <div class="container-fluid" data-ng-controller="analyticsCtrl"> <!-- set controller -->
+
+      <!-- =============================== Tab Info ==================================== -->
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Voting %</a>
@@ -46,36 +52,61 @@
             <a class="dropdown-item" data-toggle="tab" href="#senate" ng-click="getSenGraphs()">Senate</a>
             <a class="dropdown-item" data-toggle="tab" href="#house" ng-click="getHouseGraphs()">House of Reps</a>
           </div>
-        </li>        
+        </li>
       </ul>
+      <!-- ================================ End Tab Info ============================== -->
 
+      <!-- ================================= Tab Content ============================== -->
       <div class="tab-content">
+
+        <!-- ============ Welcome Content ============ -->
         <div class="jumbotron" ng-show ="welcomeJumbo">
           <h1 class="display-3">Welcome to the Analytics Page!</h1>
           <p class="lead">We've collected and analyzed data on voting behavior in the Senate and the House of Representatives.</p>
           <p class="lead">To view, choose a legislative body!</p>
           <hr class="my-4">
         </div>
+        <!-- ========== End Welcome Content ========== -->
+
+        <!-- ========= Senate Voting Content ========= -->
         <div id="senate" class="tab-pane fade active">
           <h3>Voting Percentages: Senate</h3>
           <nvd3 options="demSenOptions" data="demSen"></nvd3>
           <nvd3 options="repSenOptions" data="repSen"></nvd3>
         </div>
+        <!-- ======= End Senate Voting Content ======= -->
+
+        <!-- ========= House Voting Content ========== -->
         <div id="house" class="tab-pane fade active">
           <h3>Voting Percentages: House</h3>
           <nvd3 options="partyOptions" data="party"></nvd3>
           <nvd3 options="missedOptions" data="missed"></nvd3>
         </div>
+        <!-- ========= End House Voting Content ====== -->
+
       </div>
+      <!-- ========================= End Tab Content =================================== -->
+
     </div>
+    <!-- =============================== End Main Content ============================== -->
 
 
+    <!-- =============================== Footer ======================================== -->
     <footer class="footer bg-faded">
       <div class="container">
-        <p class="text-muted text-center">Web Science Group 3 &copy; 2017</p>
+        <div class="row">
+          <div class="col-4 text-right">
+            <img style="width:20px;height:20px;margin-top:25px;" src="./images/ShowofHandsLogo2.png" alt="logo">
+          </div>
+          <div class="col-4">
+            <p class="text-muted text-center">Copyright &copy; 2017 - RPI Web Science Team 3</p>
+          </div>
+        </div>
       </div>
     </footer>
+    <!-- =============================== End Footer ==================================== -->
 
+    <!-- ================================ Scripts ====================================== -->
     <!-- Angular -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
@@ -83,14 +114,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <!--- USMap plugin -->
-
-<!--    <script src="js/usmap/jquery.twism.js"></script> -->
-
+    <!-- <script src="js/usmap/jquery.twism.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.3/nv.d3.min.js"></script>
     <script src="https://rawgit.com/krispo/angular-nvd3/v1.0.7/dist/angular-nvd3.js"></script>
     <!-- Our js -->
     <script src="js/analytics.js"></script>
+    <!-- =============================== End Scripts =================================== -->
+
   </body>
 
 </html>

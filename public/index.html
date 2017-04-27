@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="css/index.css" />
   </head>
 
-  <body data-ng-app="homeApp">
+  <body data-ng-app="homeApp"> <!-- set app modul -->
+
+    <!-- ================================= Nav Menu ================================== -->
     <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -35,42 +37,53 @@
         </ul>
       </div>
     </nav>
+    <!-- ================================ End Nav Menu =============================== -->
 
+    <!-- ================================ Main Content =============================== -->
     <div class="container-fluid">
       <div class="col-12 text-center"><h1>Show of Hands</h1></div>
       <div class="col-12 col-auto">
         <div class="card text-center">
           <img class="round card-img-top img-fluid" src="/images/ShowofHandsLogo2.png" alt="Card image cap">
           <div class="card-block">
-            <h4 class="card-title">Quality voting visualizations using the <a href="https://www.propublica.org/datastore/api/propublica-congress-api">ProPublica Congress API</a></h2></h4>
+            <h4 class="card-title">Quality voting visualizations using the <a href="https://www.propublica.org/datastore/api/propublica-congress-api">ProPublica Congress API</a></h4>
           </div>
         </div>
       </div>
-      <!-- Bill Scroller -->
+
+      <!-- =============================== Bill Scroller ============================= -->
       <div class="col-12 text-center">
         <h1>Explore recent bills</h1>
         <h5>These are a few of the most recent bills introduced in Congress</h5>
       </div>
-      <div id="bills" class="row"  data-ng-controller="billsCtrl">
-        
-        <div class="card text-center col-12 col-sm-6 col-md-3"  ng-repeat = "bill in bills">
+
+      <!-- ============================== Bill Container ============================= -->
+      <div id="bills" class="row"  data-ng-controller="billsCtrl"> <!-- set controller -->
+
+        <!-- =============================== Bill Card =============================== -->
+        <div class="card text-center col-12 col-sm-6 col-md-3"  ng-repeat="bill in bills">
           <div class="card-block">
             <h4 class="card-title">{{bill.id}}</h4>
             <p class="card-text">{{bill.title}}</p>
-            <input type = "button" value = "Read More" class="btn btn-primary" ng-click= "loadPage(bill.id)" />
+            <input type="button" value="Read More" class="btn btn-primary" ng-click="loadPage(bill.id)" />
           </div>
         </div>
-        
-       
-        
-      </div>
-      <!-- Bio Scroller -->
-     <div class="col-12 text-center">
-       <h1>Meet your Senators and Representatives</h1>
-       <h5>Below you can find information about your senators and a couple of your state representatives</h5>
-     </div>
+        <!-- ============================== End Bill Card ============================ -->
 
+      </div>
+      <!-- ============================== End Bill Container ========================= -->
+      <!-- =============================== End Bill Scroller ========================= -->
+
+      <!-- ================================= Bio Scroller ============================ -->
+      <div class="col-12 text-center">
+        <h1>Meet your Senators and Representatives</h1>
+        <h5>Below you can find information about your senators and a couple of your state representatives</h5>
+      </div>
+
+      <!-- ================================= Bio Container =========================== -->
       <div id="bios" class="row" data-ng-controller="peopleCtrl">
+
+        <!-- ============================== Senate Bio Card ========================== -->
         <div class="card text-center col-12 col-sm-6 col-md-3" ng-repeat = "senator in senators">
           <!-- <img class="round img-fluid card-img-top" src="http://placehold.it/350" alt="Card image cap"> -->
           <div class="card-block">
@@ -79,6 +92,9 @@
             <a href={{senator.website}} class="btn btn-primary" target="_blank">Learn more</a>
           </div>
         </div>
+        <!-- ========================= End Senate Bio Container ====================== -->
+
+        <!-- =========================== House Bio Container ========================= -->
         <div class="card text-center col-12 col-sm-6 col-md-3" ng-repeat = "rep in reps | limitTo: num">
           <!-- <img class="round img-fluid card-img-top" src="http://placehold.it/350" alt="Card image cap"> -->
           <div class="card-block">
@@ -86,29 +102,43 @@
             <p class="card-text"><a href="https://twitter.com/{{rep.twitter}}/" target="_blank">@{{rep.twitter}}</a></p>
             <a href={{rep.website}} class="btn btn-primary" target="_blank">Learn more</a>
           </div>
+        </div>
+        <!-- =========================== End House Bio Container ===================== -->
+
+      </div>
+      <!-- ============================= End Bio Container =========================== -->
+      <!-- ============================= End Bio Scroller ============================ -->
+
+    </div>
+    <!-- =============================== End Main Content ============================ -->
+
+    <!-- ==================================== Footer ================================= -->
+    <footer class="footer bg-faded">
+      <div class="container">
+        <div class="row">
+          <div class="col-4 text-right">
+            <img style="width:20px;height:20px;margin-top:25px;" src="./images/ShowofHandsLogo2.png" alt="logo">
+          </div>
+          <div class="col-4">
+            <p class="text-muted text-center">Copyright &copy; 2017 - RPI Web Science Team 3</p>
           </div>
         </div>
       </div>
-    </div>
-
-    <footer class="footer bg-faded">
-      <div class="container">
-        <p class="text-muted text-center">Web Science Group 3 &copy; 2017</p>
-      </div>
     </footer>
+    <!-- ================================== End Footer =============================== -->
 
-
-
+    <!-- =================================== Scripts ================================= -->
     <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlbmy0bgqRsP80XaX6h-uiaZO6Z6AeBU0"></script> 
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlbmy0bgqRsP80XaX6h-uiaZO6Z6AeBU0"></script>
     <!-- My js -->
     <script src="js/index.js" type="text/javascript"></script>
-    
+    <!-- ================================= End Scripts =============================== -->
+
   </body>
 
 </html>

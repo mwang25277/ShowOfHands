@@ -1,14 +1,14 @@
 (function(angular) {
   'use strict';
-  var app = angular.module('homeApp', []);
-  app.controller('billsCtrl', function($scope, $rootScope, $http, $window) {
+  var app = angular.module('homeApp', []); //set app module
+  app.controller('billsCtrl', function($scope, $rootScope, $http, $window) { //set controller
     //get most recent bills to display on home page
     $scope.x = 4;
     $scope.bills = [];
     $scope.view = 1;
     console.log("bills controller starting up");
     console.log("bills controller getting");
-    $http({
+    $http({ //get bill information from server (from DB)
       url: '/bills',
       method: 'GET',
       params: {
@@ -37,7 +37,7 @@
     };
   });
 
-  app.controller('peopleCtrl', function($scope, $http, $window) {
+  app.controller('peopleCtrl', function($scope, $http, $window) { //set controller
     var Geo = {};
     $scope.state;
     $scope.members = [];
@@ -52,10 +52,12 @@
 
     function success(position) {
       var found = false;
+      //get client location
       var lat = position.coords.latitude;
       var lng = position.coords.longitude;
-      var latlng = new google.maps.LatLng(lat, lng);
-      var geocoder = new google.maps.Geocoder();
+      var latlng = new google.maps.LatLng(lat, lng); //create new lat/lng object with client info
+      var geocoder = new google.maps.Geocoder(); //create new geocoder object
+      //get state from location
       geocoder.geocode({
         'latLng': latlng
       }, function(results, status) {
@@ -66,7 +68,7 @@
               for (var i = 0; i < component.types.length; i++) {
                 if (component.types[0] == "administrative_area_level_1") {
                   var state = component.short_name;
-                  $scope.state = state;
+                  $scope.state = state; //set state
                   found = true;
                   break;
                 }
@@ -77,7 +79,7 @@
             }
           }
         }
-        $http({
+        $http({ //get member information from server (from DB)
           url: '/get-members',
           method: 'GET',
           params: {
@@ -86,6 +88,7 @@
         }).then(function successCallback(response) {
           $scope.members = response.data;
           for (var i = 0; i < $scope.members.length; i++) {
+            //add member to their respective array
             if ($scope.members[i].chamber == "senate") {
               $scope.senators.push($scope.members[i]);
             } else {
@@ -105,26 +108,30 @@
   });
 })(window.angular);
 
-function update() {
-  $.post('/update-db', function(data, status) {
-    console.log(data);
-  });
+//update funtion to update DB without having to restart server (for testing)
+function update(code) {
+  if (code == "WebsciGroup3-Update-123") {
+    $.post('/update-db', function(data, status) {
+      console.log(data);
+    });
+  }
 }
 
-function mems() {
-  $.post('/party-distr', function(data, status) {
-    console.log(data);
-  });
-}
-
-function getBillTest() {
-  $.post('/bill-contr', function(data, status) {
-    console.log(data);
-  });
-}
-
-function getImages() {
-  $.post('/get-images', function(data, status) {
-    console.log(data);
-  });
-}
+//Testing functions
+// function mems() {
+//   $.post('/party-distr', function(data, status) {
+//     console.log(data);
+//   });
+// }
+//
+// function getBillTest() {
+//   $.post('/bill-contr', function(data, status) {
+//     console.log(data);
+//   });
+// }
+//
+// function getImages() {
+//   $.post('/get-images', function(data, status) {
+//     console.log(data);
+//   });
+// }
