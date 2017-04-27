@@ -1,39 +1,9 @@
 (function(angular) {
    'use strict';
-   var app = angular.module('billsApp', []); //set app module
-
-   //https://tutorialedge.net/post/javascript/angularjs/removing-duplicates-from-ng-repeat/
-   //apparently there were duplicates when we pulled from the ai, so this filter prevents that
-   app.filter('unique', function() {
-     // we will return a function which will take in a collection
-     // and a keyname
-     return function(collection, keyname) {
-        // we define our output and keys array;
-        var output = [], 
-            keys = [];
-        
-        // we utilize angular's foreach function
-        // this takes in our original collection and an iterator function
-        angular.forEach(collection, function(item) {
-            // we check to see whether our object exists
-            var key = item[keyname];
-            // if it's not already part of our keys array
-            if(keys.indexOf(key) == -1) {
-                // add it to our keys array
-                keys.push(key); 
-                // push this item to our final output array
-                output.push(item);
-            }
-        });
-        // return our array which should be devoid of
-        // any duplicates
-        return output;
-     };
-  });
-   
-   app.controller('billsCtrl', function($scope, $http, $window) { //set controller
+   var app = angular.module('billsApp', []);
+   app.controller('billsCtrl', function($scope, $http, $window) {
       //used to display bills onto page
-      $scope.x = 120;
+      $scope.x = 120; //number of bills
       $scope.bills = [];
       $scope.sites = [];
       $scope.view= 1;
@@ -41,14 +11,12 @@
 
       $scope.class = [];
       $scope.class2 = [];
-  	  $scope.changeClass = function(){
-    	   //currently does nothing
-  	  }
+  	  
 
 
       $scope.getBills = function(){
 
-      	$http({ //get bill information from server (from DB)
+      	$http({ //get bills data when the page loads
       		url: '/bills',
       		method: 'GET',
       		params: {
@@ -56,30 +24,34 @@
       		}
       	}).then(
       		function successCallback(response, sites){
-      			$scope.bills = response.data;
+      			$scope.bills = response.data; //set bills scope variable to return value
             //$scope.sites = sites.data.sites;
       		},
       		function errorCallback(response){
+
       			console.log(response);
       		}
+
+
       	);
+
+
       }
 
 
-      $scope.loadPage = function(billID){
+
+      $scope.loadPage = function(billID){  //load the bills page on congressdotgov
         console.log(billID);
-        $http({ //get bill page on congress.gov
+        $http({
           url: '/getPage',
           method: 'GET',
           params: {
-            id: billID
+            id: billID  //use the bill id to get the site
           }
         }).then(
           function successCallback(response){
           console.log(response.data);
-          window.location.href = (response.data); //take user to page for bill
-          /* window.open could be used to open page in a new tab, but most pop-up blockers
-             will prevent this from running correctly, thus window.location.href was used. */
+          window.location.href =(response.data); //change location to the congressdotgov page we got in the call back
           }
         );
       }
@@ -87,59 +59,55 @@
 
       $scope.drawCanvas = function(billID) {
 
-        $http({ //get bill vote positions from server (from DB)
+        $scope.check = true;
+        $http({
           url: '/bill-contr',
           method: 'POST',
           params: { bill_id : billID }
         }).then(function successCallback(response) {
           console.log(response.data);
-          if (response.data.abst_votes != 100) { // if there has been action taken on the bill
-            $scope.billData = [
-              {
-                "label":"Yes",
-                "value":response.data.yes_votes
-              },
-              {
-                "label":"No",
-                "value":response.data.no_votes
-              },
-              {
-                "label":"Abstain",
-                "value":response.data.abst_votes
-              }
+          if (response.data.abst_votes != 100) {
+            var data = [
+              {"Yes":response.data.yes_votes, "color":"green"},
+              {"No":response.data.no_votes, "color":"orange"},
+              {"Abstain":response.data.abst_votes, "color":"black"}
             ];
 
-          } else { //if no action has been taken on the bill
-            $scope.billData = [
-              {
-                "label":"No Action to Date",
-                "value":response.data.abst_votes
-              }
-            ];
+            var pie_data = [];
+            pie_data[0] = response.data.yes_votes;
+            pie_data[1] = response.data.no_votes;
+            pie_data[2] = response.data.abst_votes;
+
+          } else {
+            var data = [{"abst":response.data.abst_votes, "color":"grey"}];
+            var pie_data = [];
+            pie_data[0] = response.data.abst_votes;
           }
 
+          var domElem = "#pc"+billID;
+          console.log(domElem);
 
-          nv.addGraph(function() { //create the chart
-            /* set chart parameters */
-            var chart = nv.models.pieChart()
-                .x(function(d) { return d.label })
-                .y(function(d) { return d.value })
-                .showLabels(true)
-                .labelThreshold(.05)
-                .labelType("percent");
+          var width = 200;
+          var height = 200;
+          var radius = Math.min(width, height) / 2;
+          var color = d3.scale.category20b();  //builtin range of colors
+          var svg = d3.select(domElem).append('svg').attr('width', width).attr('height', height).append('g').attr('transform', 'translate(' + (width / 2) +',' + (height / 2) + ')');
+          var arc = d3.svg.arc().outerRadius(radius);
+          var pie = d3.layout.pie().value(function(d,i) { return  pie_data[i]; }).sort(null);
 
-              d3.select("#pc"+billID+" svg") //get the current bill id
-                  .datum($scope.billData)
-                .transition().duration(1200)
-                  .call(chart);
+          var path = svg.selectAll('path')
+            .data(pie(data))
+            .enter()
+            .append('path')
+            .attr('d', arc)
+            .attr('fill', function(d, i) {
+              return data[i].color;
+            });
 
-            return chart;
-          });
 
         }, function errorCallback(response) {
           // called asynchronously if an error occurs
           // or server returns response with an error status.
-          console.log(response);
         });
       }
 
