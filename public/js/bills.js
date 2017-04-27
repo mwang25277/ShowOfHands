@@ -88,43 +88,46 @@
         }).then(function successCallback(response) {
           console.log(response.data);
           if (response.data.abst_votes != 100) {
-            var data = [
-              {"Yes":response.data.yes_votes, "color":"green"},
-              {"No":response.data.no_votes, "color":"orange"},
-              {"Abstain":response.data.abst_votes, "color":"black"}
+            $scope.billData = [
+              {
+                "label":"Yes",
+                "value":response.data.yes_votes
+              },
+              {
+                "label":"No",
+                "value":response.data.no_votes
+              },
+              {
+                "label":"Abstain",
+                "value":response.data.abst_votes
+              }
             ];
 
-            var pie_data = [];
-            pie_data[0] = response.data.yes_votes;
-            pie_data[1] = response.data.no_votes;
-            pie_data[2] = response.data.abst_votes;
-
           } else {
-            var data = [{"abst":response.data.abst_votes, "color":"grey"}];
-            var pie_data = [];
-            pie_data[0] = response.data.abst_votes;
+            $scope.billData = [
+              {
+                "label":"No Action to Date",
+                "value":response.data.abst_votes
+              }
+            ];
           }
 
-          var domElem = "#pc"+billID;
-          console.log(domElem);
 
-          var width = 200;
-          var height = 200;
-          var radius = Math.min(width, height) / 2;
-          var color = d3.scale.category20b();  //builtin range of colors
-          var svg = d3.select(domElem).append('svg').attr('width', width).attr('height', height).append('g').attr('transform', 'translate(' + (width / 2) +',' + (height / 2) + ')');
-          var arc = d3.svg.arc().outerRadius(radius);
-          var pie = d3.layout.pie().value(function(d,i) { return  pie_data[i]; }).sort(null);
+          nv.addGraph(function() {
+            var chart = nv.models.pieChart()
+                .x(function(d) { return d.label })
+                .y(function(d) { return d.value })
+                .showLabels(true)
+                .labelThreshold(.05)
+                .labelType("percent");
 
-          var path = svg.selectAll('path')
-            .data(pie(data))
-            .enter()
-            .append('path')
-            .attr('d', arc)
-            .attr('fill', function(d, i) {
-              return data[i].color;
-            });
+              d3.select("#pc"+billID+" svg")
+                  .datum($scope.billData)
+                .transition().duration(1200)
+                  .call(chart);
 
+            return chart;
+          });
 
         }, function errorCallback(response) {
           // called asynchronously if an error occurs

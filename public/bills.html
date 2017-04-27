@@ -96,19 +96,9 @@
             <div class="card-block" ng-show="view==5">
               <h4 class="card-title">{{bill.id}}</h4>
               <h3 class="card-title">Bill Controversy</h3>
-              <div class="container">
-                <div class="row">
-                  <div class="col-6">
-                    <div id="pc{{bill.id}}"></div>
-                  </div>
-                  <div class="col-4 offset-2">
-                    <div><div style="width:20px;height:20px;background-color:green;"></div><p>Yes</p></div>
-                    <div><div style="width:20px;height:20px;background-color:orange;"></div><p>No</p></div>
-                    <div><div style="width:20px;height:20px;background-color:black;"></div><p>Abstain</p></div>
-                    <div><div style="width:20px;height:20px;background-color:grey;"></div><p>No Action to Date</p></div>
-                  </div>
+                <div id="pc{{bill.id}}">
+                  <svg style:"height:150%;width:200%;"></svg>
                 </div>
-              </div>
               <input type = "button" value = "View Bill Page" class="btn btn-primary" ng-click= "loadPage(bill.id)" />
             </div>
 
